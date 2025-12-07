@@ -27,6 +27,125 @@
       --transition-slow: 520ms ease;
     }
 
+    .org-flow {
+      display: grid;
+      gap: 14px;
+    }
+
+    .org-stepper {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .org-step-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      color: var(--org-text-soft);
+      padding: 8px 14px;
+      border-radius: var(--org-radius-pill);
+      cursor: pointer;
+      transition: background var(--transition-fast), border var(--transition-fast), color var(--transition-fast);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .org-step-btn .org-step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--org-accent-teal), var(--org-accent-pink));
+      color: #020816;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .org-step-btn.active,
+    .org-step-btn:hover {
+      color: var(--org-text-main);
+      border-color: rgba(148, 163, 255, 0.55);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), rgba(255, 79, 163, 0.08));
+      box-shadow: 0 10px 22px rgba(14, 165, 233, 0.2);
+    }
+
+    .org-flow-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(148, 163, 255, 0.25);
+      padding: 12px 14px;
+      border-radius: var(--org-radius-pill);
+      position: sticky;
+      bottom: 0;
+      backdrop-filter: blur(8px);
+    }
+
+    .org-flow-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .org-flow-controls button {
+      border-radius: var(--org-radius-pill);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(255, 79, 163, 0.12));
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      color: var(--org-text-main);
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .org-flow-controls button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .org-flow-controls button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .org-step-counter {
+      color: var(--org-text-muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .org-step-panels {
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: grid;
+    }
+
+    .org-step {
+      display: none;
+      gap: 14px;
+      animation: fadeIn 200ms ease-in;
+    }
+
+    .org-step.active {
+      display: grid;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -811,213 +930,207 @@
               </div>
             </header>
 
-            <div class="org-grid">
-              <section class="org-card card-backbone">
-                <div class="org-card-header">
-                  <div class="org-card-title org-i18n"
-                    data-en="Regional Transformation Backbone"
-                    data-fr="Socle de transformation régionale">
-                    Regional Transformation Backbone
-                  </div>
-                  <span class="org-tag tag-backbone org-i18n"
-                    data-en="Overall transformation"
-                    data-fr="Transformation globale">
-                    Overall transformation
-                  </span>
-                </div>
-                <div class="org-card-body">
-                  <div class="org-sub-block">
-                    <div class="org-sub-label org-i18n"
-                      data-en="Overall Transformation"
+
+
+        <div class="org-flow">
+          <div class="org-stepper" role="tablist" aria-label="Organization journey">
+            <button class="org-step-btn active" data-step="0" type="button" role="tab" aria-selected="true">
+              <span class="org-step-index">1</span>
+              <span class="org-i18n" data-en="Regional Backbone" data-fr="Socle régional">Regional Backbone</span>
+            </button>
+            <button class="org-step-btn" data-step="1" type="button" role="tab" aria-selected="false">
+              <span class="org-step-index">2</span>
+              <span class="org-i18n" data-en="France COE" data-fr="COE France">France COE</span>
+            </button>
+            <button class="org-step-btn" data-step="2" type="button" role="tab" aria-selected="false">
+              <span class="org-step-index">3</span>
+              <span class="org-i18n" data-en="Maghreb COE" data-fr="COE Maghreb">Maghreb COE</span>
+            </button>
+          </div>
+
+          <div class="org-step-panels">
+            <div class="org-step active" data-step="0" role="tabpanel">
+              <div class="org-grid">
+                <section class="org-card card-backbone">
+                  <div class="org-card-header">
+                    <div class="org-card-title org-i18n"
+                      data-en="Regional Transformation Backbone"
+                      data-fr="Socle de transformation régionale">
+                      Regional Transformation Backbone
+                    </div>
+                    <span class="org-tag tag-backbone org-i18n"
+                      data-en="Overall transformation"
                       data-fr="Transformation globale">
-                      Overall Transformation
+                      Overall transformation
+                    </span>
+                  </div>
+                  <div class="org-card-body">
+                    <div class="org-sub-block">
+                      <div class="org-sub-label org-i18n"
+                        data-en="Overall Transformation"
+                        data-fr="Transformation globale">
+                        Overall Transformation
+                      </div>
+                      <div class="org-line-title org-i18n"
+                        data-en="Edouard Coumert"
+                        data-fr="Edouard Coumert">
+                        Edouard Coumert
+                      </div>
+                      <p class="org-i18n"
+                        data-en="Provides overall leadership for the regional transformation agenda across France &amp; Maghreb."
+                        data-fr="Porte le leadership global de l’agenda de transformation sur la France &amp; le Maghreb.">
+                        Provides overall leadership for the regional transformation agenda across France &amp; Maghreb.
+                      </p>
                     </div>
-                    <div class="org-line-title org-i18n"
-                      data-en="Edouard Coumert"
-                      data-fr="Edouard Coumert">
-                      Edouard Coumert
+
+                    <div class="org-sub-block">
+                      <div class="org-sub-label org-i18n"
+                        data-en="Shared Service – Set-up &amp; Continuous Improvement"
+                        data-fr="Shared Service – Set-up &amp; amélioration continue">
+                        Shared Service – Set-up &amp; Continuous Improvement
+                      </div>
+                      <div class="org-line-title org-i18n"
+                        data-en="Shared Service Lead: Naoual El Idrissi"
+                        data-fr="Shared Service Lead&nbsp;: Naoual El Idrissi">
+                        Shared Service Lead: Naoual El Idrissi
+                      </div>
+                      <div class="org-kpi-row">
+                        <div class="org-kpi">
+                          <div class="org-kpi-label org-i18n" data-en="PMO" data-fr="PMO">PMO</div>
+                          <div class="org-kpi-value org-i18n" data-en="~5 FTE" data-fr="~5 ETP">~5 FTE</div>
+                          <div class="org-kpi-label org-i18n" data-en="Scope" data-fr="Périmètre">Scope</div>
+                          <div class="org-kpi-value org-i18n" data-en="France + Maghreb (+ WAF / IO)" data-fr="France + Maghreb (+ WAF / IO)">
+                            France + Maghreb (+ WAF / IO)
+                          </div>
+                        </div>
+                        <div class="org-kpi">
+                          <div class="org-kpi-label org-i18n" data-en="N2 Experts" data-fr="Experts N2">N2 Experts</div>
+                          <div class="org-kpi-value org-i18n" data-en="~12 roles" data-fr="~12 rôles">~12 roles</div>
+                          <div class="org-kpi-label org-i18n" data-en="Focus" data-fr="Focus">Focus</div>
+                          <div class="org-kpi-value org-i18n"
+                            data-en="Set-up, tuning, QA, agent support"
+                            data-fr="Set-up, tuning, QA, support agent">
+                            Set-up, tuning, QA, agent support
+                          </div>
+                        </div>
+                      </div>
                     </div>
+
+                    <div class="org-sub-block">
+                      <div class="org-sub-label org-i18n"
+                        data-en="Functional Core – Regional Transformation"
+                        data-fr="Pôle fonctionnel – Transformation régionale">
+                        Functional Core – Regional Transformation
+                      </div>
+                      <div class="org-line-title org-i18n"
+                        data-en="Tiburce de Cézac (20%)"
+                        data-fr="Tiburce de Cézac (20&nbsp;%)">
+                        Tiburce de Cézac (20%)
+                      </div>
+                      <p class="org-i18n"
+                        data-en="Owns functional standards and ensures alignment of BU &amp; PresalesTech with the transformation agenda."
+                        data-fr="Porte les standards fonctionnels et aligne BU &amp; PresalesTech sur l’agenda de transformation.">
+                        Owns functional standards and ensures alignment of BU &amp; PresalesTech with the transformation agenda.
+                      </p>
+                    </div>
+
+                    <div class="org-sub-block">
+                      <div class="org-sub-label org-i18n"
+                        data-en="Regional Delivery Drive"
+                        data-fr="Pilotage régional du delivery">
+                        Regional Delivery Drive
+                      </div>
+                      <p class="org-i18n"
+                        data-en="Coordinates prioritisation, deployment roadmap and consolidated risks across France, Maghreb and other regions."
+                        data-fr="Coordonne la priorisation, la feuille de route de déploiement et la vision consolidée des risques sur la France, le Maghreb et les autres régions.">
+                        Coordinates prioritisation, deployment roadmap and consolidated risks across France, Maghreb and other regions.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <div class="org-step" data-step="1" role="tabpanel">
+              <div class="org-grid">
+                <section class="org-card card-france">
+                  <div class="org-card-header">
+                    <div class="org-card-title org-i18n"
+                      data-en="France COE – N2 Technical Consultants"
+                      data-fr="COE France – Consultants techniques N2">
+                      France COE – N2 Technical Consultants
+                    </div>
+                    <span class="org-tag tag-france org-i18n"
+                      data-en="COE France (N2 BTM)"
+                      data-fr="COE France (BTM N2)">
+                      COE France (N2 BTM)
+                    </span>
+                  </div>
+                  <div class="org-card-body">
                     <p class="org-i18n"
-                      data-en="Provides overall leadership for the regional transformation agenda across France &amp; Maghreb."
-                      data-fr="Porte le leadership global de l’agenda de transformation sur la France &amp; le Maghreb.">
-                      Provides overall leadership for the regional transformation agenda across France &amp; Maghreb.
+                      data-en="BTM N2 roles embedded in France, leveraging the shared service factory to deliver technical transformation and advanced solution set-up."
+                      data-fr="Rôles BTM N2 ancrés en France, s’appuyant sur l’usine mutualisée pour délivrer la transformation technique et le set-up avancé des solutions.">
+                      BTM N2 roles embedded in France, leveraging the shared service factory to deliver technical transformation and advanced solution set-up.
                     </p>
-                  </div>
-
-                  <div class="org-sub-block">
-                    <div class="org-sub-label org-i18n"
-                      data-en="Shared Service – Set-up &amp; Continuous Improvement"
-                      data-fr="Shared Service – Set-up &amp; amélioration continue">
-                      Shared Service – Set-up &amp; Continuous Improvement
-                    </div>
-                    <div class="org-line-title org-i18n"
-                      data-en="Shared Service Lead: Naoual El Idrissi"
-                      data-fr="Shared Service Lead&nbsp;: Naoual El Idrissi">
-                      Shared Service Lead: Naoual El Idrissi
-                    </div>
-                    <div class="org-kpi-row">
-                      <div class="org-kpi">
-                        <div class="org-kpi-label org-i18n" data-en="PMO" data-fr="PMO">PMO</div>
-                        <div class="org-kpi-value org-i18n" data-en="~5 FTE" data-fr="~5 ETP">~5 FTE</div>
-                        <div class="org-kpi-label org-i18n" data-en="Scope" data-fr="Périmètre">Scope</div>
-                        <div class="org-kpi-value org-i18n" data-en="France + Maghreb (+ WAF / IO)" data-fr="France + Maghreb (+ WAF / IO)">
-                          France + Maghreb (+ WAF / IO)
+                    <div class="org-divider-label org-i18n" data-en="BTM France (N2)" data-fr="BTM France (N2)">BTM France (N2)</div>
+                    <div class="org-sub-block">
+                      <div class="org-line-title org-i18n" data-en="N2 BTM Capacity" data-fr="Capacité BTM N2">N2 BTM Capacity</div>
+                      <p class="org-i18n"
+                        data-en="Local BTM France roles connected to the shared N2 pool managed under Naoual’s shared service."
+                        data-fr="Rôles BTM France locaux connectés à la “pool” N2 mutualisée pilotée par le Shared Service de Naoual.">
+                        Local BTM France roles connected to the shared N2 pool managed under Naoual’s shared service.
+                      </p>
+                      <div class="org-kpi-row">
+                        <div class="org-kpi">
+                          <div class="org-kpi-label org-i18n" data-en="BTM roles" data-fr="Rôles BTM">BTM roles</div>
+                          <div class="org-kpi-value org-i18n" data-en="BTM (1), BTM (2)" data-fr="BTM (1), BTM (2)">BTM (1), BTM (2)</div>
                         </div>
-                      </div>
-                      <div class="org-kpi">
-                        <div class="org-kpi-label org-i18n" data-en="N2 Experts" data-fr="Experts N2">N2 Experts</div>
-                        <div class="org-kpi-value org-i18n" data-en="~12 roles" data-fr="~12 rôles">~12 roles</div>
-                        <div class="org-kpi-label org-i18n" data-en="Focus" data-fr="Focus">Focus</div>
-                        <div class="org-kpi-value org-i18n"
-                          data-en="Set-up, tuning, QA, agent support"
-                          data-fr="Set-up, tuning, QA, support agent">
-                          Set-up, tuning, QA, agent support
+                        <div class="org-kpi">
+                          <div class="org-kpi-label org-i18n" data-en="Extra capacity" data-fr="Capacité additionnelle">Extra capacity</div>
+                          <div class="org-kpi-value org-i18n" data-en="From N2 shared pool (~12)" data-fr="Depuis la pool N2 mutualisée (~12)">From N2 shared pool (~12)</div>
                         </div>
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div class="org-connector-row">
+                <div class="org-connector-label org-i18n"
+                  data-en="France COE taps into the regional backbone (Edouard, Naoual, Tiburce) for priority setting and execution."
+                  data-fr="Le COE France s’appuie sur le socle régional (Edouard, Naoual, Tiburce) pour la priorisation et l’exécution.">
+                  France COE taps into the regional backbone (Edouard, Naoual, Tiburce) for priority setting and execution.
+                </div>
+              </div>
+            </div>
 
-                  <div class="org-sub-block">
-                    <div class="org-sub-label org-i18n"
-                      data-en="Functional Core – Regional Transformation"
-                      data-fr="Pôle fonctionnel – Transformation régionale">
-                      Functional Core – Regional Transformation
+            <div class="org-step" data-step="2" role="tabpanel">
+              <div class="org-grid">
+                <section class="org-card card-maghreb">
+                  <div class="org-card-header">
+                    <div class="org-card-title org-i18n"
+                      data-en="Maghreb COE – Chefs de Projet &amp; N1"
+                      data-fr="COE Maghreb – Chefs de Projet &amp; N1">
+                      Maghreb COE – Chefs de Projet &amp; N1
                     </div>
-                    <div class="org-line-title org-i18n"
-                      data-en="Tiburce de Cézac (20%)"
-                      data-fr="Tiburce de Cézac (20&nbsp;%)">
-                      Tiburce de Cézac (20%)
-                    </div>
+                    <span class="org-tag tag-maghreb org-i18n"
+                      data-en="COE Maghreb (N1 only)"
+                      data-fr="COE Maghreb (N1 uniquement)">
+                      COE Maghreb (N1 only)
+                    </span>
+                  </div>
+                  <div class="org-card-body">
                     <p class="org-i18n"
-                      data-en="Owns functional standards and ensures alignment of BU &amp; PresalesTech with the transformation agenda."
-                      data-fr="Porte les standards fonctionnels et aligne BU &amp; PresalesTech sur l’agenda de transformation.">
-                      Owns functional standards and ensures alignment of BU &amp; PresalesTech with the transformation agenda.
+                      data-en="Local innovation leads for each Maghreb site to drive project execution, backed by N1 support."
+                      data-fr="Leads innovation locaux pour chaque site Maghreb, accompagnés du support N1.">
+                      Local innovation leads for each Maghreb site to drive project execution, backed by N1 support.
                     </p>
-                  </div>
-
-                  <div class="org-sub-block">
-                    <div class="org-sub-label org-i18n"
-                      data-en="Regional Delivery Drive"
-                      data-fr="Pilotage régional du delivery">
-                      Regional Delivery Drive
-                    </div>
-                    <p class="org-i18n"
-                      data-en="Coordinates prioritisation, deployment roadmap and consolidated risks across France, Maghreb and other regions."
-                      data-fr="Coordonne la priorisation, la feuille de route de déploiement et la vision consolidée des risques sur la France, le Maghreb et les autres régions.">
-                      Coordinates prioritisation, deployment roadmap and consolidated risks across France, Maghreb and other regions.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              <section class="org-card card-france">
-                <div class="org-card-header">
-                  <div class="org-card-title org-i18n"
-                    data-en="France COE – N2 Technical Consultants"
-                    data-fr="COE France – Consultants techniques N2">
-                    France COE – N2 Technical Consultants
-                  </div>
-                  <span class="org-tag tag-france org-i18n"
-                    data-en="COE France (N2 BTM)"
-                    data-fr="COE France (BTM N2)">
-                    COE France (N2 BTM)
-                  </span>
-                </div>
-                <div class="org-card-body">
-                  <p class="org-i18n"
-                    data-en="BTM N2 roles embedded in France, leveraging the shared service factory to deliver technical transformation and advanced solution set-up."
-                    data-fr="Rôles BTM N2 ancrés en France, s’appuyant sur l’usine mutualisée pour délivrer la transformation technique et le set-up avancé des solutions.">
-                    BTM N2 roles embedded in France, leveraging the shared service factory to deliver technical transformation and advanced solution set-up.
-                  </p>
-                  <div class="org-divider-label org-i18n" data-en="BTM France (N2)" data-fr="BTM France (N2)">BTM France (N2)</div>
-                  <div class="org-sub-block">
-                    <div class="org-line-title org-i18n" data-en="N2 BTM Capacity" data-fr="Capacité BTM N2">N2 BTM Capacity</div>
-                    <p class="org-i18n"
-                      data-en="Local BTM France roles connected to the shared N2 pool managed under Naoual’s shared service."
-                      data-fr="Rôles BTM France locaux connectés à la “pool” N2 mutualisée pilotée par le Shared Service de Naoual.">
-                      Local BTM France roles connected to the shared N2 pool managed under Naoual’s shared service.
-                    </p>
-                    <div class="org-kpi-row">
-                      <div class="org-kpi">
-                        <div class="org-kpi-label org-i18n" data-en="BTM roles" data-fr="Rôles BTM">BTM roles</div>
-                        <div class="org-kpi-value org-i18n" data-en="BTM (1), BTM (2)" data-fr="BTM (1), BTM (2)">BTM (1), BTM (2)</div>
-                      </div>
-                      <div class="org-kpi">
-                        <div class="org-kpi-label org-i18n" data-en="Extra capacity" data-fr="Capacité additionnelle">Extra capacity</div>
-                        <div class="org-kpi-value org-i18n" data-en="From N2 shared pool (~12)" data-fr="Depuis la pool N2 mutualisée (~12)">From N2 shared pool (~12)</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="org-card card-maghreb">
-                <div class="org-card-header">
-                  <div class="org-card-title org-i18n"
-                    data-en="Maghreb COE – Chefs de Projet &amp; N1"
-                    data-fr="COE Maghreb – Chefs de Projet &amp; N1">
-                    Maghreb COE – Chefs de Projet &amp; N1
-                  </div>
-                  <span class="org-tag tag-maghreb org-i18n"
-                    data-en="COE Maghreb (N1 only)"
-                    data-fr="COE Maghreb (N1 uniquement)">
-                    COE Maghreb (N1 only)
-                  </span>
-                </div>
-                <div class="org-card-body">
-                  <p class="org-i18n"
-                    data-en="Local Chefs de Projet Innovation and N1 functional consultants delivering on-the-ground set-up, adoption and post-deployment follow-up."
-                    data-fr="Chefs de Projet Innovation et consultants fonctionnels N1 assurant le set-up terrain, l’adoption et le suivi post-déploiement.">
-                    Local Chefs de Projet Innovation and N1 functional consultants delivering on-the-ground set-up, adoption and post-deployment follow-up.
-                  </p>
-
-                  <div class="org-sub-block">
-                    <div class="org-sub-label org-i18n" data-en="Transformation Maghreb" data-fr="Transformation Maghreb">Transformation Maghreb</div>
-                    <div class="org-line-title org-i18n" data-en="Transfo Lead: Roeya Cherkaoui Salhi" data-fr="Transfo Lead&nbsp;: Roeya Cherkaoui Salhi">Transfo Lead: Roeya Cherkaoui Salhi</div>
-                    <div class="org-line-title org-i18n" data-en="Transformation Manager: Ali Bahlouli" data-fr="Responsable Transformation&nbsp;: Ali Bahlouli">Transformation Manager: Ali Bahlouli</div>
-                  </div>
-
-                  <div class="org-divider-label org-i18n"
-                    data-en="Chefs de Projet Innovation &amp; N1 by location"
-                    data-fr="Chefs de Projet Innovation &amp; N1 par localisation">
-                    Chefs de Projet Innovation &amp; N1 by location
-                  </div>
-
-                  <div class="org-local-grid">
-                    <div class="org-local-col">
-                      <div>
-                        <div class="org-local-title org-i18n" data-en="Marrakech" data-fr="Marrakech">Marrakech</div>
+                    <div class="org-divider-label org-i18n" data-en="Maghreb Sites" data-fr="Sites Maghreb">Maghreb Sites</div>
+                    <div class="org-local-grid">
+                      <div class="org-local-col">
+                        <div class="org-local-title org-i18n" data-en="C&amp;S (Rabat / Fès / Meknès)" data-fr="C&amp;S (Rabat / Fès / Meknès)">C&amp;S (Rabat / Fès / Meknès)</div>
                         <div class="org-local-item">
-                          <div class="org-local-role org-i18n" data-en="Chef de Projet: Amine Belbachir" data-fr="Chef de Projet&nbsp;: Amine Belbachir">Chef de Projet: Amine Belbachir</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: Hana Arib" data-fr="N1&nbsp;: Hana Arib">N1: Hana Arib</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: To be defined (Casting)" data-fr="N1&nbsp;: À définir (casting)">N1: To be defined (Casting)</div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div class="org-local-title org-i18n" data-en="Agadir" data-fr="Agadir">Agadir</div>
-                        <div class="org-local-item">
-                          <div class="org-local-role org-i18n" data-en="Chef de Projet: Jihane" data-fr="Chef de Projet&nbsp;: Jihane">Chef de Projet: Jihane</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: To be defined (Agadir)" data-fr="N1&nbsp;: À définir (Agadir)">N1: To be defined (Agadir)</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="org-local-col">
-                      <div>
-                        <div class="org-local-title org-i18n" data-en="Rabat / Casa &amp; Kénitra / Salé" data-fr="Rabat / Casa &amp; Kénitra / Salé">Rabat / Casa &amp; Kénitra / Salé</div>
-                        <div class="org-local-item">
-                          <div class="org-local-role org-i18n" data-en="Chef de Projet: Amine Doudouz" data-fr="Chef de Projet&nbsp;: Amine Doudouz">Chef de Projet: Amine Doudouz</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: Amina Lhiani (Kénitra)" data-fr="N1&nbsp;: Amina Lhiani (Kénitra)">N1: Amina Lhiani (Kénitra)</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: To be defined (Rabat / Casa)" data-fr="N1&nbsp;: À définir (Rabat / Casa)">N1: To be defined (Rabat / Casa)</div>
-                          <div class="org-local-n1 org-i18n" data-en="N1: To be defined (Salé)" data-fr="N1&nbsp;: À définir (Salé)">N1: To be defined (Salé)</div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div class="org-local-title org-i18n" data-en="Fès &amp; Meknès" data-fr="Fès &amp; Meknès">Fès &amp; Meknès</div>
-                        <div class="org-local-item">
-                          <div class="org-local-role org-i18n" data-en="Chef de Projet: Omar" data-fr="Chef de Projet&nbsp;: Omar">Chef de Projet: Omar</div>
+                          <div class="org-local-role org-i18n" data-en="Chef de Projet: Jalal Benslimane (Rabat)" data-fr="Chef de Projet&nbsp;: Jalal Benslimane (Rabat)">Chef de Projet: Jalal Benslimane (Rabat)</div>
+                          <div class="org-local-n1 org-i18n" data-en="N1: Amine El Ghandouri (Rabat)" data-fr="N1&nbsp;: Amine El Ghandouri (Rabat)">N1: Amine El Ghandouri (Rabat)</div>
                           <div class="org-local-n1 org-i18n" data-en="N1: Achraf Elmaslouhi (Meknès)" data-fr="N1&nbsp;: Achraf Elmaslouhi (Meknès)">N1: Achraf Elmaslouhi (Meknès)</div>
                           <div class="org-local-n1 org-i18n" data-en="N1: To be defined (Fès)" data-fr="N1&nbsp;: À définir (Fès)">N1: To be defined (Fès)</div>
                         </div>
@@ -1040,16 +1153,23 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </section>
-            </div>
-
-            <div class="org-connector-row">
-              <div class="org-connector-label org-i18n"
-                data-en="From regional backbone (Edouard, Naoual, Tiburce) to local execution in France &amp; Maghreb COE"
-                data-fr="Du socle régional (Edouard, Naoual, Tiburce) à l’exécution locale dans les COE France &amp; Maghreb">
-                From regional backbone (Edouard, Naoual, Tiburce) to local execution in France &amp; Maghreb COE
+                </section>
               </div>
+              <div class="org-connector-row">
+                <div class="org-connector-label org-i18n"
+                  data-en="Maghreb COE executes locally while staying aligned with the shared backbone and France COE practices."
+                  data-fr="Le COE Maghreb exécute localement tout en restant aligné sur le socle partagé et les pratiques du COE France.">
+                  Maghreb COE executes locally while staying aligned with the shared backbone and France COE practices.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="org-flow-controls" aria-live="polite">
+            <span class="org-step-counter">Step 1 of 3</span>
+            <div class="org-flow-actions">
+              <button class="org-flow-prev" type="button">← Previous</button>
+              <button class="org-flow-next" type="button">Next →</button>
             </div>
           </div>
         </div>
@@ -1204,6 +1324,50 @@
     }
 
     /**
+     * Guided navigation for the Organization COE content so only one block shows at a time.
+     */
+    function initOrgStepper() {
+      const orgScope = document.querySelector('.org-scope');
+      if (!orgScope) return;
+
+      const steps = Array.from(orgScope.querySelectorAll('.org-step'));
+      const buttons = Array.from(orgScope.querySelectorAll('.org-step-btn'));
+      const prev = orgScope.querySelector('.org-flow-prev');
+      const next = orgScope.querySelector('.org-flow-next');
+      const counter = orgScope.querySelector('.org-step-counter');
+      let active = 0;
+
+      const update = () => {
+        steps.forEach((step, idx) => {
+          const isActive = idx === active;
+          step.classList.toggle('active', isActive);
+          step.setAttribute('aria-hidden', String(!isActive));
+        });
+
+        buttons.forEach((btn, idx) => {
+          const isActive = idx === active;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', String(isActive));
+        });
+
+        if (prev) prev.disabled = active === 0;
+        if (next) next.disabled = active === steps.length - 1;
+        if (counter) counter.textContent = `Step ${active + 1} of ${steps.length}`;
+      };
+
+      const goTo = (idx) => {
+        active = Math.max(0, Math.min(idx, steps.length - 1));
+        update();
+      };
+
+      buttons.forEach((btn, idx) => btn.addEventListener('click', () => goTo(idx)));
+      if (prev) prev.addEventListener('click', () => goTo(active - 1));
+      if (next) next.addEventListener('click', () => goTo(active + 1));
+
+      goTo(0);
+    }
+
+    /**
      * Build navigation buttons for top bar and dots based on slides.
      * Keeps the HTML lean and makes it easy to update slide count.
      */
@@ -1267,6 +1431,7 @@
 
     // Initialize presentation behavior
     initOrgLangToggle();
+    initOrgStepper();
     buildNavigation();
     goToSlide(0);
 
