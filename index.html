@@ -648,6 +648,48 @@
       transform: scale(1.15);
     }
 
+    /* Bottom slide controls */
+    .slide-controls {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      display: inline-flex;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(11, 16, 33, 0.75);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      z-index: 9;
+    }
+
+    .slide-controls button {
+      background: linear-gradient(135deg, rgba(110, 240, 255, 0.15), rgba(123, 93, 255, 0.15));
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .slide-controls button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    .slide-controls button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
     /* Responsive tweaks */
     @media (max-width: 900px) {
       .top-nav { height: 58px; padding: 0 var(--spacing); }
@@ -663,6 +705,8 @@
       .dot-nav { right: 12px; }
       .section-title { font-size: 18px; }
       .card { font-size: 14px; }
+      .slide-controls { bottom: 14px; padding: 8px 10px; gap: 8px; }
+      .slide-controls button { padding: 8px 10px; font-size: 13px; }
     }
   </style>
 </head>
@@ -1104,14 +1148,21 @@
   <!-- Dot navigation on the right side -->
   <div class="dot-nav" id="dotNav"></div>
 
+  <!-- Bottom navigation controls -->
+  <div class="slide-controls" aria-label="Slide navigation">
+    <button id="prevSlide" type="button">← Previous</button>
+    <button id="nextSlide" type="button">Next →</button>
+  </div>
+
   <script>
     // Presentation setup
     const slidesEl = document.getElementById('slides');
     const slides = Array.from(document.querySelectorAll('.slide'));
     const topNav = document.getElementById('topNav');
     const dotNav = document.getElementById('dotNav');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
     let current = 0;
-    let isScrolling = false; // simple throttle for wheel navigation
 
     /**
      * Lightweight internationalization for the Organization COE card.
@@ -1195,6 +1246,10 @@
       slides.forEach((slide, idx) => slide.classList.toggle('active', idx === current));
       topNav.querySelectorAll('button').forEach((btn, idx) => btn.classList.toggle('active', idx === current));
       dotNav.querySelectorAll('button').forEach((dot, idx) => dot.classList.toggle('active', idx === current));
+      if (prevBtn && nextBtn) {
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === slides.length - 1;
+      }
     }
 
     /**
@@ -1210,25 +1265,19 @@
       }
     }
 
-    /**
-     * Mouse wheel navigation with a small throttle to avoid rapid skipping.
-     */
-    function handleWheel(event) {
-      if (isScrolling) return;
-      isScrolling = true;
-      const direction = event.deltaY > 0 ? 1 : -1;
-      goToSlide(current + direction);
-      setTimeout(() => { isScrolling = false; }, 420);
-    }
-
     // Initialize presentation behavior
     initOrgLangToggle();
     buildNavigation();
     goToSlide(0);
 
+    // Wire navigation buttons
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => goToSlide(current - 1));
+      nextBtn.addEventListener('click', () => goToSlide(current + 1));
+    }
+
     // Attach global listeners
     window.addEventListener('keydown', handleKeydown);
-    window.addEventListener('wheel', handleWheel, { passive: true });
 
     // Resize handler keeps current slide in place when viewport size changes
     window.addEventListener('resize', () => goToSlide(current));
