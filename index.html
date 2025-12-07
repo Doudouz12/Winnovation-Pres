@@ -1181,8 +1181,10 @@
     function goToSlide(index) {
       const clamped = Math.max(0, Math.min(index, slides.length - 1));
       current = clamped;
+      // Use percent instead of viewport units so the shift stays aligned with
+      // the actual container height (which excludes the fixed top nav).
       const offset = -clamped * 100;
-      slidesEl.style.transform = `translateY(${offset}vh)`;
+      slidesEl.style.transform = `translateY(${offset}%)`;
       updateActiveStates();
     }
 
