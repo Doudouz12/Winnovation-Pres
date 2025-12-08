@@ -149,6 +149,27 @@
       display: block;
     }
 
+    .scorecard-inline {
+      display: grid;
+      gap: var(--spacing);
+    }
+
+    .scorecard-embed {
+      border: 1px solid rgba(37, 226, 204, 0.35);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(37, 226, 204, 0.08), rgba(0, 45, 73, 0.25));
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      min-height: 70vh;
+    }
+
+    .scorecard-embed iframe {
+      width: 100%;
+      height: 95vh;
+      border: none;
+      display: block;
+    }
+
     .ix-products-inline {
       display: grid;
       gap: var(--spacing);
@@ -1834,30 +1855,23 @@
 
       <section class="slide" data-title="C. Scorecard">
         <div class="section-title"><span>C</span>Scorecard</div>
-        <div class="pillars">
-          <div class="card">
-            <h3>Implementation & Adoption</h3>
-            <p>TODO: KPIs tracking delivery, rollout, and adoption metrics.</p>
-            <div class="kpi" style="--value: 70%;">
-              <div class="bar"></div>
-              <p>Sample KPI: Delivery Readiness 70%</p>
+        <div class="scorecard-inline">
+          <div class="content-grid">
+            <div class="card is-hidden">
+              <h3>Executive Scorecard</h3>
+              <p>
+                Explore the live dashboard for adoption, pipeline, and change metrics without leaving the
+                presentation.
+              </p>
+              <p>
+                The embedded view mirrors the standalone score-card.html page, making it easy to present the latest
+                indicators directly in the deck.
+              </p>
             </div>
           </div>
-          <div class="card">
-            <h3>Client Engagement & Pipeline</h3>
-            <p>TODO: KPIs for client pipeline, engagement score, and deal velocity.</p>
-            <div class="kpi" style="--value: 55%;">
-              <div class="bar"></div>
-              <p>Sample KPI: Active Pipeline 55%</p>
-            </div>
-          </div>
-          <div class="card">
-            <h3>TekLab & Change Management</h3>
-            <p>TODO: KPIs linked to events, training, and change adoption.</p>
-            <div class="kpi" style="--value: 80%;">
-              <div class="bar"></div>
-              <p>Sample KPI: Training Completion 80%</p>
-            </div>
+
+          <div class="scorecard-embed" aria-label="Executive Scorecard live view">
+            <iframe src="score-card.html" title="Executive Scorecard"></iframe>
           </div>
         </div>
       </section>
