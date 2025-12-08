@@ -807,7 +807,7 @@
       min-height: calc(100vh - 64px);
       padding: calc(var(--spacing) * 2) calc(var(--spacing) * 2.5);
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: 1fr;
       gap: calc(var(--spacing) * 1.5);
       scroll-snap-align: start;
       scroll-margin-top: 72px;
@@ -815,12 +815,7 @@
 
     /* Slide header */
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 22px;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
+      display: none;
     }
 
     .section-title span {
