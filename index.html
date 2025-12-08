@@ -128,93 +128,25 @@
       text-transform: uppercase;
     }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(2, 8, 22, 0.82);
-      backdrop-filter: blur(8px);
-      z-index: 999;
-      padding: 16px;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal-surface {
-      position: relative;
-      width: min(1280px, 95vw);
-      height: min(900px, 92vh);
-      background: radial-gradient(circle at top left, rgba(37, 226, 204, 0.12), rgba(15, 107, 140, 0.1)),
-        rgba(0, 45, 73, 0.96);
-      border-radius: 22px;
-      border: 1px solid rgba(37, 226, 204, 0.35);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-      overflow: hidden;
+    .regional-inline {
       display: grid;
-      grid-template-rows: auto 1fr;
+      gap: var(--spacing);
     }
 
-    .modal-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      gap: 12px;
-      background: rgba(0, 61, 91, 0.85);
-      border-bottom: 1px solid rgba(37, 226, 204, 0.25);
+    .regional-embed {
+      border: 1px solid rgba(37, 226, 204, 0.35);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(37, 226, 204, 0.08), rgba(0, 45, 73, 0.25));
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      min-height: 70vh;
     }
 
-    .modal-title {
-      margin: 0;
-      font-size: 15px;
-      letter-spacing: 0.04em;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .modal-title span {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #003d5b;
-      font-weight: 800;
-      font-size: 12px;
-    }
-
-    .modal-close {
-      border: 1px solid rgba(37, 226, 204, 0.45);
-      background: linear-gradient(135deg, rgba(37, 226, 204, 0.15), rgba(110, 240, 255, 0.12));
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform var(--transition-fast), opacity var(--transition-fast);
-    }
-
-    .modal-close:hover {
-      transform: translateY(-1px);
-    }
-
-    .modal-frame {
+    .regional-embed iframe {
       width: 100%;
-      height: 100%;
+      height: 95vh;
       border: none;
-      border-radius: 0 0 22px 22px;
-      background: #022c42;
+      display: block;
     }
 
     .org-step-panels {
@@ -1677,19 +1609,25 @@
 
       <section class="slide" data-title="Regional Operating Model">
         <div class="section-title"><span>+</span>Regional Operating Model</div>
-        <div class="content-grid">
-          <div class="card">
-            <h3>France &amp; Maghreb COE</h3>
-            <p>
-              Explore a bilingual, zoomable operating model covering the functional core, shared service factory,
-              regional delivery drive, and local COE execution across France &amp; Maghreb.
-            </p>
-            <ul>
-              <li>Toggle EN/FR content instantly.</li>
-              <li>Click any card to open a detailed overlay and navigate with arrows.</li>
-              <li>Highlight roles, headcount and site coverage for N1/N2 teams.</li>
-            </ul>
-            <button class="cta-button regional-open" type="button">Open in-page view</button>
+        <div class="regional-inline">
+          <div class="content-grid">
+            <div class="card">
+              <h3>France &amp; Maghreb COE</h3>
+              <p>
+                Explore a bilingual, zoomable operating model covering the functional core, shared service factory,
+                regional delivery drive, and local COE execution across France &amp; Maghreb.
+              </p>
+              <ul>
+                <li>Toggle EN/FR content instantly.</li>
+                <li>Click any card to open a detailed overlay and navigate with arrows.</li>
+                <li>Highlight roles, headcount and site coverage for N1/N2 teams.</li>
+              </ul>
+              <button class="cta-button regional-open" type="button">Open in-page view</button>
+            </div>
+          </div>
+
+          <div class="regional-embed" id="regionalView" aria-label="Regional Operating Model in-page view">
+            <iframe src="france-maghreb-org.html" title="France &amp; Maghreb Transformation Org"></iframe>
           </div>
         </div>
       </section>
@@ -1964,28 +1902,6 @@
     </div>
   </main>
 
-  <div class="modal-backdrop" id="regionalOverlay" hidden>
-    <div class="modal-surface" role="dialog" aria-modal="true" aria-labelledby="regionalOverlayTitle">
-      <div class="modal-toolbar">
-        <h3 class="modal-title" id="regionalOverlayTitle">
-          <span>+</span>
-          Regional Operating Model
-        </h3>
-        <button class="modal-close" type="button" id="regionalClose">
-          <span aria-hidden="true">✕</span>
-          <span>Close</span>
-        </button>
-      </div>
-      <iframe
-        class="modal-frame"
-        id="regionalFrame"
-        title="Regional Operating Model"
-        src="france-maghreb-org.html"
-        loading="eager"
-      ></iframe>
-    </div>
-  </div>
-
   <script>
     // Presentation setup
     const slidesContainer = document.getElementById('slides');
@@ -1993,25 +1909,10 @@
     const topNav = document.getElementById('topNav');
     const reorderList = document.getElementById('reorderList');
     const navButtonMap = new Map();
-    const regionalOverlay = document.getElementById('regionalOverlay');
-    const regionalFrame = document.getElementById('regionalFrame');
+    const regionalView = document.getElementById('regionalView');
+    const regionalFrame = regionalView ? regionalView.querySelector('iframe') : null;
     const regionalOpen = document.querySelector('.regional-open');
-    const regionalClose = document.getElementById('regionalClose');
     let navObserver;
-
-    const openRegionalOverlay = () => {
-      if (!regionalOverlay) return;
-      regionalOverlay.hidden = false;
-      regionalOverlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    };
-
-    const closeRegionalOverlay = () => {
-      if (!regionalOverlay) return;
-      regionalOverlay.classList.remove('open');
-      regionalOverlay.hidden = true;
-      document.body.style.overflow = '';
-    };
 
     const ensureSlideIds = () => {
       slides.forEach((slide, index) => {
@@ -2104,29 +2005,18 @@
       goTo(0);
     }
 
-    function initRegionalOverlay() {
-      if (!regionalOverlay || !regionalFrame || !regionalOpen || !regionalClose) return;
+    function initRegionalInline() {
+      if (!regionalView || !regionalOpen) return;
+
+      const focusFrame = () => {
+        if (regionalFrame && typeof regionalFrame.focus === 'function') {
+          regionalFrame.focus();
+        }
+      };
 
       regionalOpen.addEventListener('click', () => {
-        // Frame loads eagerly but guard against stripped src attributes.
-        if (!regionalFrame.getAttribute('src')) {
-          regionalFrame.setAttribute('src', 'france-maghreb-org.html');
-        }
-        openRegionalOverlay();
-      });
-
-      regionalClose.addEventListener('click', closeRegionalOverlay);
-
-      regionalOverlay.addEventListener('click', (event) => {
-        if (event.target === regionalOverlay) {
-          closeRegionalOverlay();
-        }
-      });
-
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && regionalOverlay.classList.contains('open')) {
-          closeRegionalOverlay();
-        }
+        regionalView.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        focusFrame();
       });
     }
 
@@ -2317,7 +2207,7 @@
     buildReorderList();
     initOrgLangToggle();
     initOrgStepper();
-    initRegionalOverlay();
+    initRegionalInline();
     initTechnoFocusBadge();
   </script>
 </body>
