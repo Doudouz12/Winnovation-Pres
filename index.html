@@ -944,6 +944,367 @@
       box-shadow: 0 0 12px rgba(110, 240, 255, 0.5);
     }
 
+    /* Key Drivers 2026 – Techno slide */
+    .techno-wrapper {
+      --deep-blue: #003d5b;
+      --turquoise: #25e2cc;
+      --bg: #020b12;
+      --card-bg: rgba(0, 61, 91, 0.92);
+      --card-alt-bg: rgba(0, 61, 91, 0.8);
+      --text-main: #f5faff;
+      --muted: #c3d7e5;
+      --accent-soft: rgba(37, 226, 204, 0.15);
+      --border-glow: rgba(37, 226, 204, 0.55);
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 6px;
+      color: var(--text-main);
+    }
+
+    .techno-surface {
+      width: min(1180px, 100%);
+      background:
+        radial-gradient(circle at top left, rgba(37, 226, 204, 0.08), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(0, 61, 91, 0.7), rgba(0, 0, 0, 0.94));
+      border-radius: 28px;
+      padding: 28px 32px 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .techno-surface::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.02);
+      pointer-events: none;
+    }
+
+    .techno-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .techno-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .techno-eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 10px;
+      color: var(--turquoise);
+      opacity: 0.9;
+    }
+
+    .techno-title {
+      font-size: 26px;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .techno-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .techno-badge {
+      border-radius: 999px;
+      border: 1px solid rgba(37, 226, 204, 0.65);
+      padding: 6px 14px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: radial-gradient(circle at top left, rgba(37, 226, 204, 0.15), rgba(0, 0, 0, 0.9));
+      box-shadow: 0 0 16px rgba(37, 226, 204, 0.3);
+    }
+
+    .techno-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--turquoise);
+      box-shadow: 0 0 10px rgba(37, 226, 204, 0.9);
+    }
+
+    .techno-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 1.05fr;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .techno-left,
+    .techno-right {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .techno-pillar-card {
+      position: relative;
+      flex: 1;
+      border-radius: 20px;
+      padding: 16px 16px 14px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 45%),
+        var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .techno-pillar-card.highlight {
+      background:
+        linear-gradient(135deg, rgba(37, 226, 204, 0.16), transparent 50%),
+        var(--card-alt-bg);
+      border-color: var(--border-glow);
+      box-shadow: 0 0 0 1px rgba(37, 226, 204, 0.4), 0 20px 48px rgba(0, 0, 0, 0.9);
+    }
+
+    .techno-pillar-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.9);
+      border-color: rgba(37, 226, 204, 0.35);
+    }
+
+    .techno-pillar-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.2), rgba(0, 61, 91, 0.85));
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .techno-pillar-chip .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--turquoise);
+      box-shadow: 0 0 8px rgba(37, 226, 204, 0.9);
+    }
+
+    .techno-pillar-title {
+      font-size: 16px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    .techno-kpi-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .techno-kpi-card {
+      flex: 1;
+      border-radius: 14px;
+      padding: 8px 10px 9px;
+      background: radial-gradient(circle at top, rgba(37, 226, 204, 0.22), transparent 55%);
+      border: 1px solid rgba(37, 226, 204, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .techno-kpi-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .techno-kpi-value {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .techno-kpi-value span {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .techno-kpi-trend {
+      font-size: 11px;
+      color: var(--turquoise);
+      opacity: 0.9;
+    }
+
+    .techno-content-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 1.08fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .techno-content-block {
+      padding: 10px 10px 8px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent 60%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .techno-content-title {
+      font-size: 12px;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+
+    .techno-content-list {
+      list-style: none;
+      font-size: 11px;
+      line-height: 1.35;
+      color: var(--muted);
+      max-height: 132px;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+    }
+
+    .techno-content-list li {
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 2px;
+    }
+
+    .techno-content-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(37, 226, 204, 0.8);
+    }
+
+    .techno-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 10px;
+    }
+
+    .techno-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .techno-footer {
+      position: absolute;
+      left: 32px;
+      right: 32px;
+      bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+      opacity: 0.85;
+    }
+
+    .techno-logo {
+      font-weight: 650;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--turquoise);
+    }
+
+    .techno-pager {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .techno-pager-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .techno-pager-dot.active {
+      background: var(--turquoise);
+      box-shadow: 0 0 8px rgba(37, 226, 204, 0.9);
+    }
+
+    .techno-pill-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .techno-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 10px;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .techno-pill strong {
+      color: var(--turquoise);
+      font-weight: 600;
+    }
+
+    .techno-slide-index {
+      font-weight: 600;
+      color: var(--turquoise);
+    }
+
+    @media (max-width: 960px) {
+      .techno-surface {
+        padding: 20px 18px 20px;
+      }
+
+      .techno-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .techno-footer {
+        position: static;
+        margin-top: 12px;
+      }
+    }
+
     /* Responsive tweaks */
     @media (max-width: 900px) {
       .top-nav { height: 58px; padding: 0 var(--spacing); }
@@ -1336,10 +1697,179 @@
 
       <section class="slide" data-title="Key Drivers 2026 – Techno">
         <div class="section-title"><span>+</span>Key Drivers 2026 – Techno</div>
-        <div class="content-grid">
-          <div class="card">
-            <h3>Key Drivers 2026 – Techno</h3>
-            <p>Key Drivers 2026 – Techno</p>
+        <div class="techno-wrapper">
+          <div class="techno-surface">
+            <header class="techno-header">
+              <div class="techno-title-block">
+                <div class="techno-eyebrow">Winnovation 2026 • Tech &amp; Innovation</div>
+                <h3 class="techno-title">Key Drivers 2026 – Techno</h3>
+                <p class="techno-subtitle">
+                  Industrialiser les solutions iX, renforcer l'engagement client et ancrer une culture d'adoption
+                  technologique.
+                </p>
+              </div>
+              <div class="techno-badge" id="technoFocusBadge">
+                <span class="techno-badge-dot"></span>
+                <span id="technoBadgeLabel">Focus: Industrialisation &amp; Delivery</span>
+              </div>
+            </header>
+
+            <main class="techno-layout">
+              <section class="techno-left">
+                <article class="techno-pillar-card" data-focus="Industrialisation &amp; Delivery">
+                  <div class="techno-pillar-chip">
+                    <span class="dot"></span>
+                    <span>Pilier 01</span>
+                  </div>
+                  <div class="techno-pillar-title">Déploiement &amp; Industrialisation</div>
+
+                  <div class="techno-kpi-row">
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Sites équipés iX</div>
+                      <div class="techno-kpi-value">6 <span>DC prioritaires</span></div>
+                      <div class="techno-kpi-trend">+3 nouveaux en 2026</div>
+                    </div>
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Automatisation</div>
+                      <div class="techno-kpi-value">30% <span>tâches ciblées</span></div>
+                      <div class="techno-kpi-trend">Productivité &amp; fiabilité accrues</div>
+                    </div>
+                  </div>
+
+                  <div class="techno-content-grid">
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Implémentation &amp; adoption des produits iX</div>
+                      <ul class="techno-content-list">
+                        <li>Déploiement progressif des solutions iX sur plusieurs activités.</li>
+                        <li>Accompagnement dédié pour garantir la prise en main.</li>
+                        <li>Sessions d'acculturation et de formation pour CQ, managers et opérations.</li>
+                        <li>Objectif : maximiser l'usage et la valeur des outils.</li>
+                      </ul>
+                    </div>
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Automatisation &amp; Centre d'Excellence</div>
+                      <ul class="techno-content-list">
+                        <li>Identification des tâches répétitives sur la production et le support.</li>
+                        <li>Priorisation des automatisations à forte valeur mesurée.</li>
+                        <li>Structuration du Centre d'Excellence et clarification des rôles N1.</li>
+                        <li>Roadmap COE pour harmoniser les usages et accélérer les déploiements.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="techno-pillar-card" data-focus="Client &amp; Marchés">
+                  <div class="techno-pillar-chip">
+                    <span class="dot"></span>
+                    <span>Pilier 02</span>
+                  </div>
+                  <div class="techno-pillar-title">Client &amp; Marchés</div>
+
+                  <div class="techno-kpi-row">
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Engagement client</div>
+                      <div class="techno-kpi-value">+20% <span>visites qualifiées</span></div>
+                      <div class="techno-kpi-trend">TechLab &amp; démonstrations ciblées</div>
+                    </div>
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Opportunités Tech</div>
+                      <div class="techno-kpi-value">3x <span>pipeline</span></div>
+                      <div class="techno-kpi-trend">Via Tech Opportunity Tool</div>
+                    </div>
+                  </div>
+
+                  <div class="techno-content-grid">
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Client Engagement &amp; AO Business Local</div>
+                      <ul class="techno-content-list">
+                        <li>Démonstrations technologiques ciblées et co-construction avec les clients.</li>
+                        <li>Contribution directe aux AO locaux avec un volet techno différenciant.</li>
+                        <li>Solutions adaptées aux contextes Maroc &amp; Afrique.</li>
+                        <li>Expertise technique intégrée dans les équipes locales.</li>
+                      </ul>
+                    </div>
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Visite Client 2.0 &amp; Tech Opportunity Tool</div>
+                      <ul class="techno-content-list">
+                        <li>Parcours immersifs et démonstrations interactives au TekLab.</li>
+                        <li>Valorisation de cas d'usage réels pour renforcer la confiance.</li>
+                        <li>Tech Opportunity Tool comme levier global de qualification.</li>
+                        <li>Transformation des besoins opérationnels en plans d'action concrets.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              </section>
+
+              <section class="techno-right">
+                <article class="techno-pillar-card highlight" data-focus="Adoption &amp; Culture digitale">
+                  <div class="techno-pillar-chip">
+                    <span class="dot"></span>
+                    <span>Pilier 03</span>
+                  </div>
+                  <div class="techno-pillar-title">Adoption &amp; Culture Digitale</div>
+
+                  <div class="techno-kpi-row">
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Acculturation</div>
+                      <div class="techno-kpi-value">1 000+ <span>collaborateurs</span></div>
+                      <div class="techno-kpi-trend">Formés aux usages iX &amp; AI</div>
+                    </div>
+                    <div class="techno-kpi-card">
+                      <div class="techno-kpi-label">Événements TekLab</div>
+                      <div class="techno-kpi-value">20+ <span>sessions / an</span></div>
+                      <div class="techno-kpi-trend">Visibilité &amp; adoption renforcées</div>
+                    </div>
+                  </div>
+
+                  <div class="techno-content-grid">
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Feuille de Route TekLab &amp; Formations</div>
+                      <ul class="techno-content-list">
+                        <li>Feuille de route structurée pour guider l'adoption technologique.</li>
+                        <li>Sessions dédiées pour la prise en main et le suivi continu.</li>
+                        <li>Programmes d'acculturation pour renforcer les compétences digitales.</li>
+                        <li>Parcours évolutifs pour développer l'expertise et accélérer l'adoption.</li>
+                      </ul>
+                      <div class="techno-tag-row">
+                        <span class="techno-tag">Roadmap TekLab 2026</span>
+                        <span class="techno-tag">Academy iX &amp; AI</span>
+                      </div>
+                    </div>
+                    <div class="techno-content-block">
+                      <div class="techno-content-title">Événements Internes &amp; Externes</div>
+                      <ul class="techno-content-list">
+                        <li>JPO, ateliers et hackathons pour stimuler l'innovation.</li>
+                        <li>Participation à des événements externes pour montrer nos capacités.</li>
+                        <li>Animation régulière du TekLab comme espace ouvert et collaboratif.</li>
+                        <li>Alignement systématique avec les priorités Business et Operations.</li>
+                      </ul>
+                      <div class="techno-tag-row">
+                        <span class="techno-tag">JPO &amp; visites clients</span>
+                        <span class="techno-tag">Hackathons &amp; partenariats</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="techno-pill-group">
+                    <div class="techno-pill">
+                      <strong>Impact 2026&nbsp;:</strong> accélérer l'adoption, sécuriser les déploiements, créer une culture
+                      d'innovation durable.
+                    </div>
+                  </div>
+                </article>
+              </section>
+            </main>
+
+            <footer class="techno-footer">
+              <div class="techno-logo">Concentrix TekLab</div>
+              <div class="techno-pager" id="technoPager">
+                <span class="techno-pager-dot active"></span>
+                <span class="techno-pager-dot"></span>
+                <span class="techno-pager-dot"></span>
+                <span class="techno-slide-index">6 / 24</span>
+              </div>
+            </footer>
           </div>
         </div>
       </section>
@@ -1764,6 +2294,22 @@
       updateReorderBadges();
     }
 
+    function initTechnoFocusBadge() {
+      const cards = document.querySelectorAll('.techno-pillar-card');
+      const badgeLabel = document.getElementById('technoBadgeLabel');
+
+      if (!cards.length || !badgeLabel) return;
+
+      cards.forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          const focus = card.getAttribute('data-focus');
+          if (focus) {
+            badgeLabel.textContent = `Focus: ${focus}`;
+          }
+        });
+      });
+    }
+
     // Initialize presentation behavior
     ensureSlideIds();
     buildNavigation();
@@ -1772,6 +2318,7 @@
     initOrgLangToggle();
     initOrgStepper();
     initRegionalOverlay();
+    initTechnoFocusBadge();
   </script>
 </body>
 </html>
