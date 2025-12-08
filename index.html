@@ -145,6 +145,104 @@
       display: grid;
     }
 
+    .reorder-panel {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(148, 163, 255, 0.25);
+      border-radius: var(--radius);
+      padding: calc(var(--spacing) * 0.9);
+      box-shadow: var(--shadow);
+      margin: 0 calc(var(--spacing) * 1.3) calc(var(--spacing) * 1.2);
+      display: grid;
+      gap: 10px;
+    }
+
+    .reorder-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .reorder-header h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    .reorder-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .reorder-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .reorder-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(148, 163, 255, 0.35);
+      border-radius: var(--radius);
+      cursor: grab;
+      transition: background var(--transition-fast), border var(--transition-fast), transform var(--transition-fast);
+      user-select: none;
+    }
+
+    .reorder-item:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 4px;
+    }
+
+    .reorder-item.dragging {
+      opacity: 0.8;
+      border-style: solid;
+      background: rgba(110, 240, 255, 0.08);
+      transform: scale(1.01);
+    }
+
+    .reorder-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(148, 163, 255, 0.55);
+    }
+
+    .reorder-handle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .reorder-label {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .reorder-badge {
+      margin-left: auto;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(255, 79, 163, 0.18));
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      font-size: 12px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -785,6 +883,13 @@
   </header>
 
   <main class="viewport">
+    <section class="reorder-panel" aria-label="Reorder presentation sections">
+      <div class="reorder-header">
+        <h2>Arrange the journey</h2>
+        <p class="reorder-subtitle">Drag and drop to change the order of the focus areas.</p>
+      </div>
+      <ol class="reorder-list" id="reorderList"></ol>
+    </section>
     <!--
       The slides container translates along the Y axis to show one slide at a time.
       Each .slide section represents a full-screen area.
@@ -1233,9 +1338,20 @@
 
   <script>
     // Presentation setup
-    const slides = Array.from(document.querySelectorAll('.slide'));
+    const slidesContainer = document.getElementById('slides');
+    let slides = Array.from(document.querySelectorAll('.slide'));
     const topNav = document.getElementById('topNav');
+    const reorderList = document.getElementById('reorderList');
     const navButtonMap = new Map();
+    let navObserver;
+
+    const ensureSlideIds = () => {
+      slides.forEach((slide, index) => {
+        if (!slide.id) {
+          slide.id = `slide-${index + 1}`;
+        }
+      });
+    };
 
     /**
      * Lightweight internationalization for the Organization COE card.
@@ -1327,11 +1443,12 @@
     function buildNavigation() {
       if (!topNav) return;
 
+      topNav.innerHTML = '';
+      navButtonMap.clear();
+      ensureSlideIds();
+
       slides.forEach((slide, index) => {
         const title = slide.dataset.title || `Slide ${index + 1}`;
-        if (!slide.id) {
-          slide.id = `slide-${index + 1}`;
-        }
 
         const btn = document.createElement('button');
         btn.textContent = title;
@@ -1355,7 +1472,11 @@
     function initNavHighlight() {
       if (!navButtonMap.size) return;
 
-      const observer = new IntersectionObserver(
+      if (navObserver) {
+        navObserver.disconnect();
+      }
+
+      navObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             const btn = navButtonMap.get(entry.target.id);
@@ -1370,14 +1491,122 @@
         { threshold: 0.55 }
       );
 
-      slides.forEach((slide) => observer.observe(slide));
+      slides.forEach((slide) => navObserver.observe(slide));
+    }
+
+    /**
+     * Drag-and-drop helper to find the element after the cursor.
+     */
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.reorder-item:not(.dragging)')];
+
+      return draggableElements.reduce(
+        (closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset, element: child };
+          }
+          return closest;
+        },
+        { offset: Number.NEGATIVE_INFINITY, element: null }
+      ).element;
+    }
+
+    function updateReorderBadges() {
+      if (!reorderList) return;
+      reorderList.querySelectorAll('.reorder-item').forEach((item, idx) => {
+        const badge = item.querySelector('.reorder-badge');
+        if (badge) {
+          badge.textContent = `#${idx + 1}`;
+        }
+      });
+    }
+
+    function applyReorderFromList() {
+      if (!reorderList || !slidesContainer) return;
+
+      reorderList.querySelectorAll('.reorder-item').forEach((item) => {
+        const slideId = item.dataset.slideId;
+        const slide = slideId ? document.getElementById(slideId) : null;
+        if (slide) {
+          slidesContainer.appendChild(slide);
+        }
+      });
+
+      slides = Array.from(slidesContainer.querySelectorAll('.slide'));
+      updateReorderBadges();
+      buildNavigation();
+      initNavHighlight();
+    }
+
+    function buildReorderList() {
+      if (!reorderList) return;
+
+      reorderList.innerHTML = '';
+      ensureSlideIds();
+
+      slides.forEach((slide) => {
+        const item = document.createElement('li');
+        item.className = 'reorder-item';
+        item.draggable = true;
+        item.dataset.slideId = slide.id;
+
+        const handle = document.createElement('span');
+        handle.className = 'reorder-handle';
+        handle.textContent = '≡';
+        handle.setAttribute('aria-hidden', 'true');
+
+        const label = document.createElement('span');
+        label.className = 'reorder-label';
+        label.textContent = slide.dataset.title || slide.id;
+
+        const badge = document.createElement('span');
+        badge.className = 'reorder-badge';
+
+        item.appendChild(handle);
+        item.appendChild(label);
+        item.appendChild(badge);
+
+        item.addEventListener('dragstart', (event) => {
+          item.classList.add('dragging');
+          if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', slide.id);
+          }
+        });
+
+        item.addEventListener('dragend', () => {
+          item.classList.remove('dragging');
+          applyReorderFromList();
+        });
+
+        reorderList.appendChild(item);
+      });
+
+      reorderList.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        const afterElement = getDragAfterElement(reorderList, event.clientY);
+        const dragging = reorderList.querySelector('.reorder-item.dragging');
+        if (!dragging) return;
+        if (afterElement == null) {
+          reorderList.appendChild(dragging);
+        } else {
+          reorderList.insertBefore(dragging, afterElement);
+        }
+        updateReorderBadges();
+      });
+
+      updateReorderBadges();
     }
 
     // Initialize presentation behavior
-    initOrgLangToggle();
-    initOrgStepper();
+    ensureSlideIds();
     buildNavigation();
     initNavHighlight();
+    buildReorderList();
+    initOrgLangToggle();
+    initOrgStepper();
   </script>
 </body>
 </html>
