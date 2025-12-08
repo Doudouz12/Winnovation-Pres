@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TekLab – France & Maghreb Transformation Org</title>
+  <style>
+    :root {
+      --bg-main: #050816;
+      --bg-card: #0b1020;
+      --bg-card-alt: #101630;
+      --border-soft: #4b5bff55;
+      --accent: #25e2cc;
+      --accent-soft: #25e2cc44;
+      --text-main: #e0e5f5;
+      --text-muted: #9aa4c8;
+
+      --filled-role: #00b8a9;
+      --open-role:   #121e3f;
+      --open-role-border: #25e2cc77;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #182553 0, #050816 55%);
+      color: var(--text-main);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 1px solid #101630;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(90deg, #050816ee, #050816dd);
+    }
+
+    .title-block h1 {
+      font-size: 18px;
+      margin: 0 0 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f4f7ff;
+    }
+
+    .title-block p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+      user-select: none;
+      font-size: 13px;
+    }
+
+    .lang-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      opacity: 0.55;
+      transition: 0.2s ease;
+    }
+
+    .lang-pill.active {
+      background: var(--accent-soft);
+      opacity: 1;
+      color: #ffffff;
+    }
+
+    .kpi-chip {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #ffffff22;
+      background: #0b1020;
+      color: var(--text-muted);
+    }
+
+    main.page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .layout-main {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      padding: 18px 24px 20px;
+      gap: 16px;
+    }
+
+    .org-wrapper {
+      flex: 1.7;
+      overflow-x: auto;
+      padding: 0 0 4px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, #111937 0, #050816 55%);
+      border: 1px solid #111732;
+    }
+
+    .legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 10px 16px 6px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      border-bottom: 1px solid #101630;
+      background: linear-gradient(90deg, #050816, #091028);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--text-muted);
+    }
+
+    .legend > div {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      background: #080d1d;
+      border-radius: 999px;
+      border: 1px solid #0f1635;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+    }
+    .dot.functional { background: #ffb347; }
+    .dot.shared     { background: #25e2cc; }
+    .dot.local      { background: #ff6b81; }
+
+    .role-legend {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--text-muted);
+    }
+
+    .role-swatch {
+      width: 18px;
+      height: 10px;
+      border-radius: 6px;
+      border: 1px solid #ffffff33;
+    }
+
+    .role-swatch.filled { background: var(--filled-role); }
+    .role-swatch.open   { background: var(--open-role); }
+
+    .view-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .zoom-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #080d1d;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid #0f1635;
+      color: var(--text-muted);
+    }
+
+    .zoom-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 1px solid #232b52;
+      background: #0b1020;
+      color: #cfd6ff;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .zoom-label {
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .view-toggle {
+      display: inline-flex;
+      gap: 6px;
+      background: #080d1d;
+      border-radius: 999px;
+      border: 1px solid #0f1635;
+      padding: 3px 4px;
+    }
+
+    .view-pill {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .view-pill.active {
+      background: #141c3a;
+      color: #f0f4ff;
+      box-shadow: 0 0 0 1px #ffffff11;
+    }
+
+    #orgChart {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      min-width: 1100px;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+      padding: 8px 16px 16px;
+    }
+
+    .org-single-root {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .org-views {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .org-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .org-view.active {
+      display: flex;
+    }
+
+    .split-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .org-chart {
+      display: flex;
+      justify-content: center;
+    }
+
+    .org-chart ul {
+      padding-top: 18px;
+      position: relative;
+      list-style-type: none;
+      padding-left: 0;
+      white-space: nowrap;
+    }
+
+    .org-chart ul::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 1px solid var(--border-soft);
+      height: 18px;
+    }
+
+    .org-chart li {
+      display: inline-block;
+      text-align: center;
+      vertical-align: top;
+      padding: 18px 10px 0 10px;
+      position: relative;
+    }
+
+    .org-chart li::before,
+    .org-chart li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      border-top: 1px solid var(--border-soft);
+      width: 50%;
+      height: 18px;
+    }
+
+    .org-chart li::before { right: 50%; }
+    .org-chart li::after  { left: 50%; }
+
+    .org-chart li:only-child::before,
+    .org-chart li:only-child::after {
+      display: none;
+    }
+
+    .org-chart li:only-child {
+      padding-top: 0;
+    }
+
+    .org-chart li:first-child::before,
+    .org-chart li:last-child::after {
+      border: none;
+    }
+
+    .org-chart li > ul {
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      max-height: 999px;
+    }
+
+    .org-chart li.collapsed > ul {
+      max-height: 0;
+    }
+
+    .org-chart li.collapsed > .node {
+      opacity: 0.95;
+    }
+
+    .org-view[data-view="maghreb"] .org-chart ul {
+      padding-top: 22px;
+    }
+    .org-view[data-view="maghreb"] .org-chart li {
+      padding: 22px 10px 0;
+    }
+    .org-view[data-view="maghreb"] .node {
+      min-width: 240px;
+    }
+
+    .node {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: linear-gradient(145deg, var(--bg-card-alt), var(--bg-card));
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+      min-width: 230px;
+      cursor: pointer;
+      transition: 0.22s ease;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.5s ease forwards;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .node-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .node strong {
+      font-size: 15px;
+      display: block;
+    }
+
+    .node span {
+      font-size: 12px;
+      opacity: 0.82;
+    }
+
+    .node-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid #ffffff33;
+      background: radial-gradient(circle at 30% 20%, #ffffff44, #141b3d 55%, #050816 100%);
+      box-shadow: 0 0 0 1px #00000066;
+      flex-shrink: 0;
+    }
+
+    .node:hover {
+      transform: translateY(3px);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.7);
+      border-color: var(--accent);
+    }
+
+    .node.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft), 0 18px 45px rgba(0,0,0,0.8);
+    }
+
+    .node::before {
+      content: attr(data-icon);
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 10px;
+      opacity: 0.75;
+    }
+
+    .node::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid transparent;
+      pointer-events: none;
+    }
+
+    .node[data-type="functional"]::after { border-color: #ffb34733; }
+    .node[data-type="shared"]::after     { border-color: #25e2cc33; }
+    .node[data-type="local"]::after      { border-color: #ff6b8133; }
+
+    .org-view[data-view="maghreb"] .node[data-role="chef"] {
+      background: linear-gradient(145deg, #1a2751, #0b1020);
+      border-color: #25e2ccaa;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.7);
+    }
+
+    .org-view[data-view="maghreb"] .node[data-role="n1"] {
+      background: linear-gradient(145deg, #0b1020, #050816);
+      border-color: #3a4a8f;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .role-grid {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-column {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: stretch;
+    }
+
+    .role-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-align: left;
+      margin-left: 3px;
+    }
+
+    .role {
+      min-width: 120px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--open-role-border);
+      font-size: 11px;
+      text-align: center;
+      box-shadow: 0 5px 16px rgba(0,0,0,0.5);
+      background: var(--open-role);
+      color: #e0e5f5;
+      white-space: nowrap;
+    }
+
+    .role.filled {
+      background: var(--filled-role);
+      color: #021412;
+      border-color: #00f0cfaa;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- dynamic Maghreb bands --- */
+    .mag-layer {
+      position: relative;
+      width: 100%;
+      padding-top: 4px;
+    }
+
+    .mag-band {
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      border-radius: 20px;
+      background: radial-gradient(circle at top, #0a1030bb 0, #050816aa 60%);
+      border: 1px dashed #25e2cc55;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .mag-band-label {
+      position: absolute;
+      top: -11px;
+      left: 24px;
+      padding: 2px 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: #050816;
+      border-radius: 999px;
+      border: 1px solid #25e2cc66;
+      color: #f4f7ff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+    }
+
+    .maghreb-resp {
+      max-width: 860px;
+      margin: 12px auto 8px;
+      padding: 14px 18px 14px;
+      border-radius: 14px;
+      background: #080d1e;
+      border: 1px solid #151f42;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      font-size: 12px;
+      color: #c9d2ff;
+    }
+
+    .maghreb-resp h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: #f4f7ff;
+    }
+
+    .maghreb-resp ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .maghreb-resp li {
+      margin-bottom: 4px;
+    }
+
+    .role-summary {
+      flex: 1;
+      max-width: 420px;
+      background: radial-gradient(circle at bottom right, #111a3b 0, #050816 55%);
+      border-radius: 18px;
+      border: 1px solid #111732;
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: sticky;
+      top: 80px;
+      align-self: flex-start;
+    }
+
+    .role-summary-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .role-summary-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .role-card {
+      background: #080d1e;
+      border-radius: 14px;
+      border: 1px solid #151f42;
+      padding: 10px 12px 9px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+    }
+
+    .role-card h3 {
+      font-size: 13px;
+      margin: 0 0 4px;
+      color: #f4f7ff;
+    }
+
+    .role-card .role-tagline {
+      font-size: 11px;
+      margin: 0 0 6px;
+      color: var(--text-muted);
+    }
+
+    .role-card ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 11px;
+      color: #c9d2ff;
+    }
+
+    .role-card li {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 1100px) {
+      .layout-main {
+        flex-direction: column;
+        padding: 14px 16px 18px;
+      }
+      .org-wrapper {
+        order: 1;
+      }
+      .role-summary {
+        order: 2;
+        max-width: none;
+        position: static;
+        margin-top: 6px;
+      }
+      .mag-band {
+        left: 2%;
+        right: 2%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="title-block">
+      <h1>France &amp; Maghreb Transformation Org</h1>
+      <p>Overall Transformation · Maghreb N1 COE · France Region COE &amp; Shared Service</p>
+    </div>
+
+    <div class="top-right">
+      <span class="kpi-chip">5 PMO · 12+ N2 · 12 N1</span>
+      <div class="lang-toggle" id="langToggle">
+        <span class="lang-pill active" data-lang="en">🇬🇧 EN</span>
+        <span class="lang-pill" data-lang="fr">🇫🇷 FR</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="layout-main">
+      <div class="org-wrapper">
+        <div class="legend-row">
+          <div class="legend">
+            <div><span class="dot functional"></span> Sponsor &amp; functional</div>
+            <div><span class="dot shared"></span> France COE &amp; shared service</div>
+            <div><span class="dot local"></span> Maghreb COE &amp; N1 execution</div>
+          </div>
+
+          <div class="role-legend">
+            <div><span class="role-swatch filled"></span> Filled</div>
+            <div><span class="role-swatch open"></span> Open</div>
+          </div>
+
+          <div class="view-controls">
+            <div class="view-toggle">
+              <button class="view-pill" data-view="maghreb">Maghreb N1 COE</button>
+              <button class="view-pill active" data-view="france">France Region COE &amp; Shared Service</button>
+            </div>
+            <div class="zoom-box">
+              <span>View</span>
+              <button class="zoom-btn" data-zoom="out">−</button>
+              <span class="zoom-label" id="zoomLabel">90%</span>
+              <button class="zoom-btn" data-zoom="in">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="orgChart">
+          <div class="org-single-root" data-view-root="france">
+            <div
+              id="node-edouard"
+              class="node"
+              data-type="functional"
+              data-en-title="Overall Transformation – France &amp; Maghreb"
+              data-en-sub="Edouard Coumert"
+              data-fr-title="Overall Transformation – France &amp; Maghreb"
+              data-fr-sub="Edouard Coumert"
+            >
+              <div class="node-avatar"></div>
+              <div class="node-text">
+                <strong>Overall Transformation – France &amp; Maghreb</strong>
+                <span>Edouard Coumert</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="org-views">
+            <!-- MAGHREB VIEW -->
+            <div class="org-view" data-view="maghreb">
+              <div class="split-label">Organisation COE – N1 Maghreb</div>
+
+              <div class="mag-layer">
+                <div class="mag-band mag-band-chef">
+                  <div class="mag-band-label">Chef de Projet Innovation</div>
+                </div>
+                <div class="mag-band mag-band-n1">
+                  <div class="mag-band-label">N1</div>
+                </div>
+
+                <div class="org-chart">
+                  <ul>
+                    <li>
+                      <div
+                        id="node-roeya"
+                        class="node"
+                        data-type="functional"
+                        data-en-title="Roeya Cherkaoui Salhi"
+                        data-en-sub="Organisation COE – N1 Maghreb"
+                        data-fr-title="Roeya Cherkaoui Salhi"
+                        data-fr-sub="Organisation COE – N1 Maghreb"
+                      >
+                        <div class="node-avatar"></div>
+                        <div class="node-text">
+                          <strong>Roeya Cherkaoui Salhi</strong>
+                          <span>Organisation COE – N1 Maghreb</span>
+                        </div>
+                      </div>
+
+                      <ul>
+                        <li>
+                          <div
+                            id="node-ali"
+                            class="node"
+                            data-type="functional"
+                            data-en-title="Ali Bahloul"
+                            data-en-sub="Transformation – Maghreb"
+                            data-fr-title="Ali Bahloul"
+                            data-fr-sub="Responsable Transformation – Maghreb"
+                          >
+                            <div class="node-avatar"></div>
+                            <div class="node-text">
+                              <strong>Ali Bahloul</strong>
+                              <span>Transformation – Maghreb</span>
+                            </div>
+                          </div>
+
+                          <ul>
+                            <!-- Chef + N1 pairs -->
+                            <li class="auto-collapse">
+                              <div
+                                id="node-marrakech"
+                                class="node"
+                                data-type="local"
+                                data-role="chef"
+                                data-en-title="Amine Belbachir"
+                                data-en-sub="Marrakech"
+                                data-fr-title="Amine Belbachir"
+                                data-fr-sub="Marrakech"
+                              >
+                                <div class="node-avatar"></div>
+                                <div class="node-text">
+                                  <strong>Amine Belbachir</strong>
+                                  <span>Marrakech</span>
+                                </div>
+                              </div>
+                              <ul>
+                                <li>
+                                  <div
+                                    id="node-n1-hana"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="Hana Arib"
+                                    data-en-sub="Marrakech"
+                                    data-fr-title="Hana Arib"
+                                    data-fr-sub="Marrakech"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>Hana Arib</strong>
+                                      <span>Marrakech</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+
+                            <li class="auto-collapse">
+                              <div
+                                id="node-rabat-casa"
+                                class="node"
+                                data-type="local"
+                                data-role="chef"
+                                data-en-title="Amine Doudouz"
+                                data-en-sub="Rabat / Casa"
+                                data-fr-title="Amine Doudouz"
+                                data-fr-sub="Rabat / Casa"
+                              >
+                                <div class="node-avatar"></div>
+                                <div class="node-text">
+                                  <strong>Amine Doudouz</strong>
+                                  <span>Rabat / Casa</span>
+                                </div>
+                              </div>
+                              <ul>
+                                <li>
+                                  <div
+                                    id="node-n1-rabat"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="À définir"
+                                    data-en-sub="Rabat / Casa"
+                                    data-fr-title="À définir"
+                                    data-fr-sub="Rabat / Casa"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>À définir</strong>
+                                      <span>Rabat / Casa</span>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    id="node-n1-amina"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="Amina Lhiani"
+                                    data-en-sub="Kénitra"
+                                    data-fr-title="Amina Lhiani"
+                                    data-fr-sub="Kénitra"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>Amina Lhiani</strong>
+                                      <span>Kénitra</span>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    id="node-n1-sale"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="À définir"
+                                    data-en-sub="Salé"
+                                    data-fr-title="À définir"
+                                    data-fr-sub="Salé"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>À définir</strong>
+                                      <span>Salé</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+
+                            <li class="auto-collapse">
+                              <div
+                                id="node-agadir"
+                                class="node"
+                                data-type="local"
+                                data-role="chef"
+                                data-en-title="Jihane"
+                                data-en-sub="Agadir"
+                                data-fr-title="Jihane"
+                                data-fr-sub="Agadir"
+                              >
+                                <div class="node-avatar"></div>
+                                <div class="node-text">
+                                  <strong>Jihane</strong>
+                                  <span>Agadir</span>
+                                </div>
+                              </div>
+                              <ul>
+                                <li>
+                                  <div
+                                    id="node-n1-agadir"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="À définir"
+                                    data-en-sub="Agadir"
+                                    data-fr-title="À définir"
+                                    data-fr-sub="Agadir"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>À définir</strong>
+                                      <span>Agadir</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+
+                            <li class="auto-collapse">
+                              <div
+                                id="node-fes-meknes"
+                                class="node"
+                                data-type="local"
+                                data-role="chef"
+                                data-en-title="Omar"
+                                data-en-sub="Fès &amp; Meknès"
+                                data-fr-title="Omar"
+                                data-fr-sub="Fès &amp; Meknès"
+                              >
+                                <div class="node-avatar"></div>
+                                <div class="node-text">
+                                  <strong>Omar</strong>
+                                  <span>Fès &amp; Meknès</span>
+                                </div>
+                              </div>
+                              <ul>
+                                <li>
+                                  <div
+                                    id="node-n1-achraf"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="Achraf Elmaslouhi"
+                                    data-en-sub="Meknès"
+                                    data-fr-title="Achraf Elmaslouhi"
+                                    data-fr-sub="Meknès"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>Achraf Elmaslouhi</strong>
+                                      <span>Meknès</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+
+                            <li class="auto-collapse">
+                              <div
+                                id="node-at-region"
+                                class="node"
+                                data-type="local"
+                                data-role="chef"
+                                data-en-title="Région AT – Chef de Projet"
+                                data-en-sub="Algérie / Tunisie"
+                                data-fr-title="Région AT – Chef de Projet"
+                                data-fr-sub="Algérie / Tunisie"
+                              >
+                                <div class="node-avatar"></div>
+                                <div class="node-text">
+                                  <strong>Région AT – Chef de Projet</strong>
+                                  <span>Algérie / Tunisie</span>
+                                </div>
+                              </div>
+                              <ul>
+                                <li>
+                                  <div
+                                    id="node-n1-rahma"
+                                    class="node"
+                                    data-type="local"
+                                    data-role="n1"
+                                    data-en-title="Rahma Ezzine"
+                                    data-en-sub="Tunisie"
+                                    data-fr-title="Rahma Ezzine"
+                                    data-fr-sub="Tunisie"
+                                  >
+                                    <div class="node-avatar"></div>
+                                    <div class="node-text">
+                                      <strong>Rahma Ezzine</strong>
+                                      <span>Tunisie</span>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="maghreb-resp">
+                <h3>Responsabilités principales – N1 Maghreb</h3>
+                <ul>
+                  <li><strong>Configuration et paramétrage :</strong> relai de proximité pour l’installation et la configuration des outils selon les besoins opérationnels.</li>
+                  <li><strong>Support utilisateur :</strong> accompagner les équipes terrain dans la prise en main des outils.</li>
+                  <li><strong>Suivi et maintenance :</strong> assurer le suivi des performances et signaler les incidents ou dysfonctionnements.</li>
+                  <li><strong>Conduite du changement :</strong> former les utilisateurs et favoriser l’adoption des outils.</li>
+                  <li><strong>Amélioration continue :</strong> identifier et proposer des axes d’optimisation à partir des retours utilisateurs.</li>
+                  <li><strong>Collaboration :</strong> remonter les besoins et incidents au PMO et à l’expert fonctionnel N2 pour assurer la coordination.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- FRANCE VIEW -->
+            <div class="org-view active" data-view="france">
+              <div class="split-label">France Region COE &amp; Shared Service</div>
+              <div class="org-chart">
+                <ul>
+                  <li>
+                    <div
+                      id="node-france-coe"
+                      class="node"
+                      data-type="shared"
+                      data-en-title="France Region COE &amp; Shared Service"
+                      data-en-sub="Naoual El Idrissi"
+                      data-fr-title="France Region COE &amp; Shared Service"
+                      data-fr-sub="Naoual El Idrissi"
+                    >
+                      <div class="node-avatar"></div>
+                      <div class="node-text">
+                        <strong>France Region COE &amp; Shared Service</strong>
+                        <span>Naoual El Idrissi</span>
+                      </div>
+                    </div>
+
+                    <ul>
+                      <li>
+                        <div
+                          id="node-ss-maroc"
+                          class="node"
+                          data-type="shared"
+                          data-en-title="Maroc – 5 PMO · 12 BTM (N2)"
+                          data-en-sub="PMO &amp; BTM pool"
+                          data-fr-title="Maroc – 5 PMO · 12 BTM (N2)"
+                          data-fr-sub="Pool PMO &amp; BTM"
+                        >
+                          <div class="node-avatar"></div>
+                          <div class="node-text">
+                            <strong>MAROC</strong>
+                            <span>5 PMO · 12 BTM (N2)</span>
+                          </div>
+                        </div>
+
+                        <div class="role-grid">
+                          <div class="role-column">
+                            <div class="role-label">PMO</div>
+                            <div class="role filled">Hamza LAROUSSI</div>
+                            <div class="role">PMO (2)</div>
+                            <div class="role">PMO (3)</div>
+                            <div class="role">PMO (4)</div>
+                            <div class="role">PMO (5)</div>
+                          </div>
+                          <div class="role-column">
+                            <div class="role-label">BTM (N2)</div>
+                            <div class="role filled">Adil BENFARJI</div>
+                            <div class="role filled">Mohamed ERRABAA</div>
+                            <div class="role filled">Mounssif RADI</div>
+                            <div class="role filled">Zineb HABAD</div>
+                            <div class="role">BTM (5)</div>
+                            <div class="role">BTM (6)</div>
+                            <div class="role">BTM (7)</div>
+                            <div class="role">BTM (8)</div>
+                            <div class="role">BTM (9)</div>
+                            <div class="role">BTM (10)</div>
+                            <div class="role">BTM (11)</div>
+                            <div class="role">BTM (12)</div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <div
+                          id="node-ss-france"
+                          class="node"
+                          data-type="shared"
+                          data-en-title="France – 2 BTM (N2)"
+                          data-en-sub="BTM pool"
+                          data-fr-title="France – 2 BTM (N2)"
+                          data-fr-sub="Pool BTM"
+                        >
+                          <div class="node-avatar"></div>
+                          <div class="node-text">
+                            <strong>FRANCE</strong>
+                            <span>2 BTM (N2)</span>
+                          </div>
+                        </div>
+                        <div class="role-grid">
+                          <div class="role-column">
+                            <div class="role-label">BTM (N2)</div>
+                            <div class="role">BTM (1)</div>
+                            <div class="role">BTM (2)</div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <div
+                          id="node-ss-waf"
+                          class="node"
+                          data-type="shared"
+                          data-en-title="WAF – 3 BTM (N2)"
+                          data-en-sub="BTM pool"
+                          data-fr-title="WAF – 3 BTM (N2)"
+                          data-fr-sub="Pool BTM"
+                        >
+                          <div class="node-avatar"></div>
+                          <div class="node-text">
+                            <strong>WAF</strong>
+                            <span>3 BTM (N2)</span>
+                          </div>
+                        </div>
+                        <div class="role-grid">
+                          <div class="role-column">
+                            <div class="role-label">BTM (N2)</div>
+                            <div class="role filled">John Freddy Désiré ANGNI</div>
+                            <div class="role">BTM (2)</div>
+                            <div class="role">BTM (3)</div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <div
+                          id="node-ss-mada"
+                          class="node"
+                          data-type="shared"
+                          data-en-title="Mada – 1 BTM (N2)"
+                          data-en-sub="BTM pool"
+                          data-fr-title="Mada – 1 BTM (N2)"
+                          data-fr-sub="Pool BTM"
+                        >
+                          <div class="node-avatar"></div>
+                          <div class="node-text">
+                            <strong>MADA</strong>
+                            <span>1 BTM (N2)</span>
+                          </div>
+                        </div>
+                        <div class="role-grid">
+                          <div class="role-column">
+                            <div class="role-label">BTM (N2)
+                            </div>
+                            <div class="role">BTM (1)</div>
+                          </div>
+                        </div>
+                      </li>
+
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <aside id="roleSummary" class="role-summary">
+        <div class="role-summary-title">Rôles clés &amp; responsabilités</div>
+        <div class="role-summary-grid">
+          <article class="role-card">
+            <h3>PMO – Coordination des déploiements</h3>
+            <p class="role-tagline">Pilote la mise en œuvre des outils pour la région.</p>
+            <ul>
+              <li>Construire et suivre la feuille de route de déploiement (planning, jalons, dépendances).</li>
+              <li>Coordonner la communication avec les parties prenantes (N1, N2, IT, clients).</li>
+              <li>Gérer risques, ressources et arbitrages pour sécuriser les livrables.</li>
+              <li>Garantir la qualité des mises en production et le respect des standards.</li>
+              <li>Clôturer les projets et capitaliser les retours d’expérience.</li>
+            </ul>
+          </article>
+
+          <article class="role-card">
+            <h3>Business Transformation Manager (N2)</h3>
+            <p class="role-tagline">Relie besoins métier, solutions digitales et roadmap régionale.</p>
+            <ul>
+              <li>Recueillir et formaliser les besoins métier en solutions digitales.</li>
+              <li>Co-construire la roadmap produit avec la région et les pays.</li>
+              <li>Définir les évolutions fonctionnelles et suivre la delivery.</li>
+              <li>Assurer la veille technologique et challenger les choix d’outils.</li>
+              <li>Suivre la performance (KPIs, ROI, adoption) et porter la conduite du changement.</li>
+            </ul>
+          </article>
+
+          <article class="role-card">
+            <h3>Consultant fonctionnel innovation (N1)</h3>
+            <p class="role-tagline">Relais terrain pour l’installation, l’adoption et le support.</p>
+            <ul>
+              <li>Configurer les outils selon les besoins opérationnels des sites.</li>
+              <li>Accompagner les équipes terrain (support, formation et coaching).</li>
+              <li>Suivre incidents, performances et irritants du quotidien.</li>
+              <li>Remonter besoins et idées d’amélioration au PMO et aux N2.</li>
+              <li>Ancrer durablement les solutions dans les routines de management.</li>
+            </ul>
+          </article>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const langToggle = document.getElementById('langToggle');
+    let currentLang = 'en';
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.dataset.lang === lang);
+      });
+
+      document.querySelectorAll('.node').forEach(node => {
+        const titleKey = lang === 'en' ? 'enTitle' : 'frTitle';
+        const subKey   = lang === 'en' ? 'enSub'   : 'frSub';
+
+        const title = node.dataset[titleKey];
+        const sub   = node.dataset[subKey];
+
+        if (title) node.querySelector('strong').textContent = title;
+        if (sub)   node.querySelector('span').textContent   = sub;
+      });
+
+      updateMaghrebBands();
+    }
+
+    langToggle.addEventListener('click', (e) => {
+      const target = e.target.closest('.lang-pill');
+      if (!target) return;
+      updateLanguage(target.dataset.lang);
+    });
+
+    const viewPills = document.querySelectorAll('.view-pill');
+    const orgViews  = document.querySelectorAll('.org-view');
+    const rootWrapper = document.querySelector('[data-view-root="france"]');
+    const roleSummary = document.getElementById('roleSummary');
+
+    viewPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const view = pill.dataset.view;
+
+        viewPills.forEach(p => p.classList.toggle('active', p === pill));
+        orgViews.forEach(v => v.classList.toggle('active', v.dataset.view === view));
+
+        if (rootWrapper) {
+          rootWrapper.style.display = (view === 'france') ? 'flex' : 'none';
+        }
+
+        if (roleSummary) {
+          roleSummary.style.display = (view === 'maghreb') ? 'none' : 'flex';
+        }
+
+        if (view === 'maghreb') {
+          updateMaghrebBands();
+        }
+      });
+    });
+
+    const orgChart = document.getElementById('orgChart');
+    const zoomLabel = document.getElementById('zoomLabel');
+    let zoomLevel = 0.9;
+
+    function applyZoom() {
+      orgChart.style.transform = `scale(${zoomLevel})`;
+      zoomLabel.textContent = Math.round(zoomLevel * 100) + '%';
+      updateMaghrebBands();
+    }
+
+    document.querySelectorAll('.zoom-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.zoom;
+        if (dir === 'in') zoomLevel = Math.min(1.35, zoomLevel + 0.1);
+        if (dir === 'out') zoomLevel = Math.max(0.6, zoomLevel - 0.1);
+        applyZoom();
+      });
+    });
+
+    applyZoom();
+
+    // Dynamic bands around Chef / N1 rows
+    function updateMaghrebBands() {
+      const magView = document.querySelector('.org-view[data-view="maghreb"]');
+      if (!magView || !magView.classList.contains('active')) return;
+
+      const magLayer = magView.querySelector('.mag-layer');
+      if (!magLayer) return;
+
+      const rectLayer = magLayer.getBoundingClientRect();
+
+      function positionBand(role, bandSelector) {
+        const nodes = magLayer.querySelectorAll(`.node[data-role="${role}"]`);
+        const band = magLayer.querySelector(bandSelector);
+        if (!nodes.length || !band) return;
+
+        let minTop = Infinity;
+        let maxBottom = -Infinity;
+
+        nodes.forEach(node => {
+          const r = node.getBoundingClientRect();
+          if (r.top < minTop) minTop = r.top;
+          if (r.bottom > maxBottom) maxBottom = r.bottom;
+        });
+
+        if (!isFinite(minTop) || !isFinite(maxBottom)) return;
+
+        const padding = 16;
+        const topInLayer = (minTop - rectLayer.top) / zoomLevel - padding;
+        const heightInLayer = (maxBottom - minTop) / zoomLevel + padding * 2;
+
+        band.style.top = `${topInLayer}px`;
+        band.style.height = `${heightInLayer}px`;
+        band.style.opacity = '1';
+      }
+
+      positionBand('chef', '.mag-band-chef');
+      positionBand('n1', '.mag-band-n1');
+    }
+
+    // Setup nodes: icons, animation delay, collapse handler
+    const allNodes = document.querySelectorAll('.node');
+    allNodes.forEach((node, index) => {
+      const li = node.closest('li');
+      const hasChildren = li && li.querySelector(':scope > ul');
+      node.dataset.icon = hasChildren ? '▾' : '';
+      node.style.setProperty('--delay', (index * 0.03) + 's');
+    });
+
+    document.querySelectorAll('li.auto-collapse').forEach(li => {
+      li.classList.add('collapsed');
+      const node = li.querySelector(':scope > .node');
+      if (node) node.dataset.icon = '▸';
+    });
+
+    allNodes.forEach(node => {
+      node.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = node.closest('li');
+        const hasChildren = li && li.querySelector(':scope > ul');
+        if (hasChildren) {
+          li.classList.toggle('collapsed');
+          node.dataset.icon = li.classList.contains('collapsed') ? '▸' : '▾';
+        }
+        allNodes.forEach(n => n.classList.remove('active'));
+        node.classList.add('active');
+        updateMaghrebBands();
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      updateMaghrebBands();
+    });
+
+    updateLanguage('en');
+    if (rootWrapper) rootWrapper.style.display = 'flex';
+    if (roleSummary) roleSummary.style.display = 'flex';
+    const rootNode = document.getElementById('node-edouard');
+    if (rootNode) rootNode.classList.add('active');
+    updateMaghrebBands();
+  </script>
+</body>
+</html>
