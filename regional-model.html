@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Regional Transformation Operating Model – Bilingual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #020816;
+      --bg-alt: #071426;
+      --card: #061a2b;
+      --card-soft: #071f35;
+      --accent-teal: #00c3b8;
+      --accent-orange: #ff8a3c;
+      --accent-pink: #ff4fa3;
+      --accent-yellow: #ffd75e;
+      --accent-border: #1e3a5f;
+      --text-main: #f9fafb;
+      --text-soft: #cbd5f5;
+      --text-muted: #8b9ac5;
+      --line: #263b63;
+      --badge-bg: rgba(10, 148, 255, 0.08);
+      --badge-border: rgba(148, 163, 255, 0.55);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top left, #042f4b 0, var(--bg) 50%),
+        radial-gradient(circle at bottom right, #042f3b 0, #000 60%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .no-scroll {
+      overflow: hidden;
+    }
+
+    .dashboard {
+      width: 95vw;
+      height: 95vh;
+      max-width: 1300px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(6, 12, 30, 0.98));
+      border-radius: 24px;
+      padding: 12px 14px 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.07), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(244, 114, 182, 0.06), transparent 55%);
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .dashboard-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent 60%);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-pink));
+    }
+
+    h1 {
+      font-size: 22px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+
+    .top-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+
+    .legend-pill {
+      width: 20px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .pill-core { background: linear-gradient(135deg, #facc15, #fb923c); }
+    .pill-factory { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+    .pill-delivery { background: linear-gradient(135deg, #6366f1, #0ea5e9); }
+    .pill-local { background: linear-gradient(135deg, #ec4899, #f97316); }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      font-size: 12px;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .lang-btn {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .lang-btn span.flag {
+      font-size: 14px;
+    }
+
+    .lang-btn.active {
+      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.35), rgba(15, 23, 42, 0.95));
+      color: var(--text-main);
+      border: 1px solid rgba(129, 140, 248, 0.8);
+      transform: translateY(-0.5px);
+    }
+
+    .lang-btn:not(.active) {
+      border: 1px solid transparent;
+      opacity: 0.8;
+    }
+
+    .lang-btn:hover {
+      opacity: 1;
+      transform: translateY(-0.5px);
+    }
+
+    .main-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), rgba(15, 23, 42, 0.96));
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--accent-border);
+      padding: 10px 12px 10px;
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease;
+      cursor: zoom-in;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.12), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96, 165, 250, 0.75);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.9);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      background: var(--badge-bg);
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .tag-sponsor { border-color: rgba(251, 191, 36, 0.9); color: #fef3c7; }
+    .tag-core { border-color: rgba(250, 204, 21, 0.8); color: #fef9c3; }
+    .tag-factory { border-color: rgba(45, 212, 191, 0.85); color: #ccfbf1; }
+    .tag-delivery { border-color: rgba(96, 165, 250, 0.85); color: #dbeafe; }
+    .tag-local { border-color: rgba(244, 114, 182, 0.85); color: #fce7f3; }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--text-soft);
+      display: grid;
+      gap: 6px;
+    }
+
+    .card-body p,
+    .card-body li {
+      line-height: 1.45;
+    }
+
+    .card-body-root {
+      display: grid;
+      gap: 8px;
+    }
+
+    .line-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 255, 0.25);
+      font-size: 11px;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-pink));
+    }
+
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .kpi {
+      min-width: 80px;
+      padding: 6px 8px;
+      border-radius: 11px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: grid;
+      gap: 2px;
+    }
+
+    .kpi-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .kpi-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .kpi-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .detail-only {
+      display: none;
+    }
+
+    .card.expanded .detail-only,
+    .overlay-card .detail-only {
+      display: block;
+    }
+
+    .card-root {
+      background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.18), rgba(15, 23, 42, 0.98));
+    }
+
+    .card-factory {
+      background: radial-gradient(circle at top left, rgba(45, 212, 191, 0.16), rgba(15, 23, 42, 0.98));
+    }
+
+    .card-maghreb {
+      background: radial-gradient(circle at top left, rgba(244, 114, 182, 0.14), rgba(15, 23, 42, 0.98));
+    }
+
+    .divider-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin: 10px 2px 4px;
+    }
+
+    .local-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px 10px;
+      margin-top: 6px;
+    }
+
+    .local-col {
+      display: grid;
+      gap: 6px;
+    }
+
+    .local-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .local-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(75, 85, 99, 0.85);
+    }
+
+    .local-role {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .local-n1 {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .delivery-grid {
+      margin-top: 8px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .delivery-dg {
+      text-align: center;
+      padding: 6px 10px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f472b6, #fb7185);
+      color: #fdf2f8;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.45);
+    }
+
+    .delivery-dg span.sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .delivery-leads {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .delivery-lead {
+      padding: 6px 8px;
+      border-radius: 12px;
+      background: rgba(24, 31, 56, 0.96);
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      font-size: 11px;
+    }
+
+    .delivery-lead-title {
+      font-weight: 600;
+      color: #fee2e2;
+    }
+
+    .delivery-lead-name {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: #fecaca;
+    }
+
+    .connector-row {
+      position: relative;
+      margin: 4px 0 0;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .connector-row::before {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line), transparent);
+      opacity: 0.9;
+    }
+
+    .connector-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 255, 0.55);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      text-align: center;
+      max-width: 90%;
+    }
+
+    /* Gradient separator inside merged card */
+    .section-separator {
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-pink));
+      opacity: 0.9;
+      margin: 8px 0 6px;
+    }
+
+    /* Overlay / expanded view */
+    .card-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.24s ease;
+      z-index: 40;
+    }
+
+    .card-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-inner {
+      position: relative;
+      width: 96vw;
+      max-width: 1400px;
+      max-height: 96vh;
+      padding: 10px 20px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .overlay-card {
+      width: 75vw;
+      max-width: 1100px;
+      height: 75vh;
+      max-height: 75vh;
+      overflow-y: auto;
+      transform: translateY(10px) scale(0.96);
+      animation: overlayIn 0.24s ease forwards;
+      cursor: default;
+      padding: 18px 22px 18px !important;
+      display: flex;
+      flex-direction: column;
+      border-radius: 22px;
+    }
+
+    .overlay-card .card-header {
+      margin-bottom: 10px;
+    }
+
+    .overlay-card .card-title {
+      font-size: 16px;
+    }
+
+    .overlay-card .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+    }
+
+    .overlay-card .card-body {
+      font-size: 15px;
+      gap: 12px;
+      padding-right: 4px;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .overlay-card .card-body-root {
+      gap: 12px;
+    }
+
+    .overlay-card .line-title {
+      font-size: 16px;
+    }
+
+    .overlay-card .kpi-label {
+      font-size: 11px;
+    }
+
+    .overlay-card .kpi-value {
+      font-size: 15px;
+    }
+
+    .overlay-card .kpi-sub {
+      font-size: 11px;
+    }
+
+    .overlay-card .local-role {
+      font-size: 14px;
+    }
+
+    .overlay-card .local-n1 {
+      font-size: 13px;
+    }
+
+    .overlay-card .divider-label {
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .overlay-card .pill {
+      font-size: 13px;
+    }
+
+    .overlay-card ul {
+      padding-left: 18px;
+    }
+
+    .overlay-card .local-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+      margin-top: 8px;
+    }
+
+    .overlay-card .delivery-leads {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @keyframes overlayIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .overlay-close {
+      position: absolute;
+      top: 6px;
+      right: 24px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+      z-index: 2;
+    }
+
+    .overlay-close span:first-child {
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .overlay-close:hover {
+      background: rgba(30, 64, 175, 0.96);
+      color: var(--text-main);
+      border-color: rgba(129, 140, 248, 0.9);
+    }
+
+    .overlay-nav {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+      font-size: 11px;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+      z-index: 2;
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.25s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .overlay-nav.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .overlay-nav span.icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .overlay-nav:hover {
+      background: rgba(30, 64, 175, 0.96);
+      color: var(--text-main);
+      border-color: rgba(129, 140, 248, 0.9);
+    }
+
+    .overlay-prev {
+      order: 0;
+    }
+
+    .overlay-next {
+      order: 2;
+    }
+
+    .overlay-inner .overlay-card {
+      order: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .local-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .delivery-leads {
+        grid-template-columns: 1fr 1fr;
+      }
+      .main-layout {
+        overflow: auto;
+      }
+      .grid {
+        overflow: visible;
+      }
+      .overlay-card .local-grid {
+        grid-template-columns: 1fr;
+      }
+      .overlay-card .delivery-leads {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+      }
+      .dashboard {
+        width: 100%;
+        height: auto;
+      }
+      .local-grid {
+        grid-template-columns: 1fr;
+      }
+      .delivery-leads {
+        grid-template-columns: 1fr;
+      }
+      .header {
+        flex-direction: column;
+      }
+      .top-right {
+        width: 100%;
+        align-items: flex-start;
+      }
+      .overlay-inner {
+        width: 95vw;
+        max-height: 92vh;
+        padding: 10px 12px 16px;
+        gap: 8px;
+      }
+      .overlay-card {
+        width: 85vw;
+        height: 78vh;
+        padding: 16px 16px 14px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="dashboard-inner">
+      <header class="header">
+        <div class="title-block">
+          <div class="eyebrow"
+               data-en="REGIONAL TRANSFORMATION OPERATING MODEL"
+               data-fr="MODÈLE OPÉRATIONNEL DE TRANSFORMATION RÉGIONALE">
+            <span class="eyebrow-dot"></span>
+            <span class="i18n">REGIONAL TRANSFORMATION OPERATING MODEL</span>
+          </div>
+          <h1 class="i18n"
+              data-en="France &amp; Maghreb COE"
+              data-fr="COE France &amp; Maghreb – Vue TekLab">
+            France &amp; Maghreb COE
+          </h1>
+          <p class="subtitle i18n"
+             data-en="Unified view of the functional core, shared service factory, regional delivery drive and local Centres of Excellence (BTM N2 in France and N1 consultants in Maghreb)."
+             data-fr="Vue unifiée du pôle fonctionnel, du Shared Service, du pilotage régional du delivery et des Centres d’Excellence locaux (BTM N2 en France et consultants N1 au Maghreb).">
+            Unified view of the functional core, shared service factory, regional delivery drive and local Centres of Excellence (BTM N2 in France and N1 consultants in Maghreb).
+          </p>
+        </div>
+
+        <div class="top-right">
+          <div class="lang-toggle" aria-label="Language toggle">
+            <button class="lang-btn active" data-lang="en" type="button">
+              <span class="flag">🇬🇧</span>
+              <span>EN</span>
+            </button>
+            <button class="lang-btn" data-lang="fr" type="button">
+              <span class="flag">🇫🇷</span>
+              <span>FR</span>
+            </button>
+          </div>
+
+          <div class="legend">
+            <div class="legend-item">
+              <span class="legend-pill pill-core"></span>
+              <span class="i18n"
+                    data-en="Functional core"
+                    data-fr="Pôle fonctionnel">
+                Functional core
+              </span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-pill pill-factory"></span>
+              <span class="i18n"
+                    data-en="Shared service factory"
+                    data-fr="Shared Service">
+                Shared service factory
+              </span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-pill pill-delivery"></span>
+              <span class="i18n"
+                    data-en="Regional delivery drive"
+                    data-fr="Pilotage régional du delivery">
+                Regional delivery drive
+              </span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-pill pill-local"></span>
+              <span class="i18n"
+                    data-en="Local COE execution"
+                    data-fr="Exécution COE locale">
+                Local COE execution
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="main-layout">
+        <!-- MERGED TOP CARD -->
+        <section class="card card-root" data-card-id="0">
+          <div class="card-header">
+            <div class="card-title i18n"
+                 data-en="Transformation &amp; Regional Delivery – France &amp; Maghreb"
+                 data-fr="Transformation globale &amp; pilotage régional du delivery – France &amp; Maghreb">
+              Transformation &amp; Regional Delivery – France &amp; Maghreb
+            </div>
+            <span class="tag tag-sponsor i18n"
+                  data-en="Sponsorship, functional core &amp; governance"
+                  data-fr="Sponsoring, pôle fonctionnel &amp; gouvernance">
+              Sponsorship, functional core &amp; governance
+            </span>
+          </div>
+          <div class="card-body card-body-root">
+            <!-- Edouard -->
+            <div>
+              <div class="line-title i18n"
+                   data-en="Edouard – Executive sponsor"
+                   data-fr="Edouard – Sponsor exécutif">
+                Edouard – Executive sponsor
+              </div>
+              <p class="i18n"
+                 data-en="Single sponsor for the France &amp; Maghreb transformation agenda, connecting regional work to the wider Concentrix and EMEA strategy."
+                 data-fr="Sponsor unique de l’agenda de transformation France &amp; Maghreb, connecté à la stratégie Concentrix et EMEA.">
+                Single sponsor for the France &amp; Maghreb transformation agenda, connecting regional work to the wider Concentrix and EMEA strategy.
+              </p>
+              <div class="detail-only">
+                <ul style="margin-left: 16px; margin-top: 2px; display: grid; gap: 3px;">
+                  <li class="i18n"
+                      data-en="Arbitrates priorities across countries and programmes."
+                      data-fr="Arbitre les priorités entre pays et programmes.">
+                    Arbitrates priorities across countries and programmes.
+                  </li>
+                  <li class="i18n"
+                      data-en="Secures senior and client buy-in on the transformation roadmap."
+                      data-fr="Sécurise le buy-in des instances dirigeantes et des clients sur la feuille de route de transformation.">
+                    Secures senior and client buy-in on the transformation roadmap.
+                  </li>
+                  <li class="i18n"
+                      data-en="Ensures transformation is owned at executive level, not treated as a side initiative."
+                      data-fr="Garantit que la transformation est portée au niveau exécutif, et non comme une initiative à part.">
+                    Ensures transformation is owned at executive level, not treated as a side initiative.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="section-separator"></div>
+
+            <!-- Functional core - Tiburce -->
+            <div>
+              <div class="line-title i18n"
+                   data-en="Tiburce de Cézac – Functional core lead"
+                   data-fr="Tiburce de Cézac – Lead pôle fonctionnel">
+                Tiburce de Cézac – Functional core lead
+              </div>
+              <p class="i18n"
+                 data-en="Owns functional standards and acts as the regional reference for transformation methodology – defines what &ldquo;good&rdquo; looks like."
+                 data-fr="Porte les standards fonctionnels et sert de référent régional pour la méthodologie de transformation – définit ce à quoi ressemble le &laquo;&nbsp;good&nbsp;&raquo;.">
+                Owns functional standards and acts as the regional reference for transformation methodology – defines what &ldquo;good&rdquo; looks like.
+              </p>
+              <div class="detail-only">
+                <div class="line-title i18n"
+                     data-en="BU &amp; PresalesTech coordination"
+                     data-fr="Coordination BU &amp; PresalesTech">
+                  BU &amp; PresalesTech coordination
+                </div>
+                <ul style="margin-left: 16px; margin-top: 4px; display: grid; gap: 3px;">
+                  <li class="i18n"
+                      data-en="Aligns sales, pre-sales and delivery on the same transformation story."
+                      data-fr="Aligne sales, pré-sales et delivery sur la même histoire de transformation.">
+                    Aligns sales, pre-sales and delivery on the same transformation story.
+                  </li>
+                  <li class="i18n"
+                      data-en="Ensures the promise made in the pitch is exactly the capability delivered in production."
+                      data-fr="S’assure que la promesse faite en avant-vente correspond exactement aux capacités délivrées en production.">
+                    Ensures the promise made in the pitch is exactly the capability delivered in production.
+                  </li>
+                  <li class="i18n"
+                      data-en="Keeps offers and value propositions consistent across regions."
+                      data-fr="Garantit la cohérence des offres et des propositions de valeur entre les régions.">
+                    Keeps offers and value propositions consistent across regions.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="section-separator"></div>
+
+            <!-- Regional Delivery Drive summary -->
+            <div>
+              <div class="line-title i18n"
+                   data-en="Regional Delivery Drive (DG Plaque &amp; Transfo Leads)"
+                   data-fr="Pilotage régional du delivery (DG Plaque &amp; Transfo Leads)">
+                Regional Delivery Drive (DG Plaque &amp; Transfo Leads)
+              </div>
+              <p class="i18n"
+                 data-en="Governance layer ensuring that France, Maghreb and other regions follow a coherent, sequenced transformation roadmap."
+                 data-fr="Couche de gouvernance qui garantit que la France, le Maghreb et les autres régions suivent une feuille de route de transformation cohérente et séquencée.">
+                Governance layer ensuring that France, Maghreb and other regions follow a coherent, sequenced transformation roadmap.
+              </p>
+              <div class="detail-only">
+                <ul style="margin-left: 16px; margin-top: 4px; display: grid; gap: 3px;">
+                  <li class="i18n"
+                      data-en="Prioritisation &amp; deployment calendar by country."
+                      data-fr="Priorisation et calendrier de déploiement par pays.">
+                    Prioritisation &amp; deployment calendar by country.
+                  </li>
+                  <li class="i18n"
+                      data-en="Consolidated regional view of risks and dependencies."
+                      data-fr="Vision régionale consolidée des risques et dépendances.">
+                    Consolidated regional view of risks and dependencies.
+                  </li>
+                  <li class="i18n"
+                      data-en="Direct interface with country leadership and DG Plaque / Transfo Leads (France, Maghreb, WAF, IO)."
+                      data-fr="Interface directe avec les directions pays et la DG Plaque / Transfo Leads (France, Maghreb, WAF, IO).">
+                    Direct interface with country leadership and DG Plaque / Transfo Leads (France, Maghreb, WAF, IO).
+                  </li>
+                </ul>
+
+                <div class="divider-label i18n"
+                     data-en="DG Plaque / Countries &amp; Transfo Leads"
+                     data-fr="DG Plaque / pays &amp; Transfo Leads">
+                  DG Plaque / Countries &amp; Transfo Leads
+                </div>
+                <div class="delivery-grid">
+                  <div class="delivery-dg">
+                    <span class="i18n"
+                          data-en="DG Plaque / Countries"
+                          data-fr="DG Plaque / pays">
+                      DG Plaque / Countries
+                    </span>
+                    <span class="sub i18n"
+                          data-en="Global oversight &amp; arbitration on sequencing"
+                          data-fr="Supervision globale &amp; arbitrage sur le séquencement">
+                      Global oversight &amp; arbitration on sequencing
+                    </span>
+                  </div>
+                  <div class="delivery-leads">
+                    <div class="delivery-lead">
+                      <span class="delivery-lead-title i18n"
+                            data-en="France"
+                            data-fr="France">
+                        France
+                      </span>
+                      <span class="delivery-lead-name i18n"
+                            data-en="Transfo Leads: Anaïs &amp; Charlène"
+                            data-fr="Transfo Leads&nbsp;: Anaïs &amp; Charlène">
+                        Transfo Leads: Anaïs &amp; Charlène
+                      </span>
+                    </div>
+                    <div class="delivery-lead">
+                      <span class="delivery-lead-title i18n"
+                            data-en="Maghreb"
+                            data-fr="Maghreb">
+                        Maghreb
+                      </span>
+                      <span class="delivery-lead-name i18n"
+                            data-en="Transfo Lead: Roeya"
+                            data-fr="Transfo Lead&nbsp;: Roeya">
+                        Transfo Lead: Roeya
+                      </span>
+                    </div>
+                    <div class="delivery-lead">
+                      <span class="delivery-lead-title i18n"
+                            data-en="WAF"
+                            data-fr="WAF">
+                        WAF
+                      </span>
+                      <span class="delivery-lead-name i18n"
+                            data-en="Transfo Lead: Sébastien H."
+                            data-fr="Transfo Lead&nbsp;: Sébastien H.">
+                        Transfo Lead: Sébastien H.
+                      </span>
+                    </div>
+                    <div class="delivery-lead">
+                      <span class="delivery-lead-title i18n"
+                            data-en="Indian Ocean"
+                            data-fr="Indian Ocean">
+                        Indian Ocean
+                      </span>
+                      <span class="delivery-lead-name i18n"
+                            data-en="Transfo Lead: Th Ralitera"
+                            data-fr="Transfo Lead&nbsp;: Th Ralitera">
+                        Transfo Lead: Th Ralitera
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <div class="grid">
+          <!-- Shared Service Factory (includes France COE N2) -->
+          <section class="card card-factory" data-card-id="1">
+            <div class="card-header">
+              <div class="card-title i18n"
+                   data-en="Shared Service – Set-up &amp; Continuous Improvement"
+                   data-fr="Shared Service – Set-up &amp; amélioration continue">
+                Shared Service – Set-up &amp; Continuous Improvement
+              </div>
+              <span class="tag tag-factory i18n"
+                    data-en="Execution factory"
+                    data-fr="Usine d’exécution">
+                Execution factory
+              </span>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="line-title i18n"
+                     data-en="Naoual El Idrissi – Overall shared service lead"
+                     data-fr="Naoual El Idrissi – Responsable globale du Shared Service">
+                  Naoual El Idrissi – Overall shared service lead
+                </div>
+                <p class="i18n"
+                   data-en="Leads the shared service engine that configures tools, industrialises best practices and runs N2 support for France &amp; Maghreb."
+                   data-fr="Pilote le moteur de services mutualisés qui configure les outils, industrialise les bonnes pratiques et opère le N2 pour la France &amp; le Maghreb.">
+                  Leads the shared service engine that configures tools, industrialises best practices and runs N2 support for France &amp; Maghreb.
+                </p>
+              </div>
+
+              <div class="detail-only">
+                <div class="line-title i18n"
+                     data-en="PMO – Programme management"
+                     data-fr="PMO – Pilotage de programme">
+                  PMO – Programme management
+                </div>
+                <p class="i18n"
+                   data-en="Central PMO supporting all regions on planning, reporting and risk management – the &ldquo;brain&rdquo; of the execution factory."
+                   data-fr="PMO central qui accompagne toutes les régions sur la planification, le reporting et la gestion des risques – le &laquo;&nbsp;cerveau&nbsp;&raquo; de l’usine d’exécution.">
+                  Central PMO supporting all regions on planning, reporting and risk management – the &ldquo;brain&rdquo; of the execution factory.
+                </p>
+                <div class="kpi-row">
+                  <div class="kpi">
+                    <div class="kpi-label i18n"
+                         data-en="Headcount"
+                         data-fr="Effectif">
+                      Headcount
+                    </div>
+                    <div class="kpi-value i18n"
+                         data-en="~5 FTE"
+                         data-fr="~5 ETP">
+                      ~5 FTE
+                    </div>
+                    <div class="kpi-sub i18n"
+                         data-en="PMO roles"
+                         data-fr="Rôles PMO">
+                      PMO roles
+                    </div>
+                  </div>
+                  <div class="kpi">
+                    <div class="kpi-label i18n"
+                         data-en="Scope"
+                         data-fr="Périmètre">
+                      Scope
+                    </div>
+                    <div class="kpi-value i18n"
+                         data-en="France + Maghreb"
+                         data-fr="France + Maghreb">
+                      France + Maghreb
+                    </div>
+                    <div class="kpi-sub i18n"
+                         data-en="Plus WAF / IO support"
+                         data-fr="+ support WAF / IO">
+                      Plus WAF / IO support
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-only">
+                <div class="line-title i18n"
+                     data-en="N2 – Product experts &amp; agent support"
+                     data-fr="N2 – Experts produit &amp; support agents">
+                  N2 – Product experts &amp; agent support
+                </div>
+                <p class="i18n"
+                   data-en="N2 technical experts (BTM profiles), anchored in the France COE, translating business needs into concrete digital set-ups and continuous improvement."
+                   data-fr="Experts techniques N2 (profils BTM), ancrés au COE France, qui traduisent les besoins métier en set-ups digitaux concrets et en amélioration continue.">
+                  N2 technical experts (BTM profiles), anchored in the France COE, translating business needs into concrete digital set-ups and continuous improvement.
+                </p>
+                <div class="kpi-row">
+                  <div class="kpi">
+                    <div class="kpi-label i18n"
+                         data-en="Headcount"
+                         data-fr="Effectif">
+                      Headcount
+                    </div>
+                    <div class="kpi-value i18n"
+                         data-en="~12 roles"
+                         data-fr="~12 rôles">
+                      ~12 roles
+                    </div>
+                    <div class="kpi-sub i18n"
+                         data-en="N2 / set-up capacity"
+                         data-fr="Capacité N2 / set-up">
+                      N2 / set-up capacity
+                    </div>
+                  </div>
+                  <div class="kpi">
+                    <div class="kpi-label i18n"
+                         data-en="Key focus"
+                         data-fr="Focus clé">
+                      Key focus
+                    </div>
+                    <div class="kpi-value i18n"
+                         data-en="Set-up &amp; tuning"
+                         data-fr="Set-up &amp; tuning">
+                      Set-up &amp; tuning
+                    </div>
+                    <div class="kpi-sub i18n"
+                         data-en="QA, agent support, CI"
+                         data-fr="QA, support agents, amélioration continue">
+                      QA, agent support, CI
+                    </div>
+                  </div>
+                </div>
+
+                <div class="divider-label i18n"
+                     data-en="France COE – N2 Technical Consultants"
+                     data-fr="COE France – Consultants techniques N2">
+                  France COE – N2 Technical Consultants
+                </div>
+                <p class="i18n"
+                   data-en="BTM N2 roles embedded in France, working hand-in-hand with the shared service factory to deliver advanced technical transformation."
+                   data-fr="Rôles BTM N2 ancrés en France, travaillant main dans la main avec le Shared Service pour délivrer la transformation technique avancée.">
+                  BTM N2 roles embedded in France, working hand-in-hand with the shared service factory to deliver advanced technical transformation.
+                </p>
+                <div class="pill-row">
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span class="i18n"
+                          data-en="BTM (1)"
+                          data-fr="BTM (1)">
+                      BTM (1)
+                    </span>
+                  </div>
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span class="i18n"
+                          data-en="BTM (2)"
+                          data-fr="BTM (2)">
+                      BTM (2)
+                    </span>
+                  </div>
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span class="i18n"
+                          data-en="Future N2 capacity as needed"
+                          data-fr="Capacité N2 additionnelle selon besoins">
+                      Future N2 capacity as needed
+                    </span>
+                  </div>
+                </div>
+
+                <div class="pill-row">
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span class="i18n"
+                          data-en="Product &amp; platform expertise"
+                          data-fr="Expertise produit &amp; plateforme">
+                      Product &amp; platform expertise
+                    </span>
+                  </div>
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span class="i18n"
+                          data-en="Runbook &amp; playbook industrialisation"
+                          data-fr="Industrialisation des runbooks &amp; playbooks">
+                      Runbook &amp; playbook industrialisation
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Maghreb COE (N1) -->
+          <section class="card card-maghreb" data-card-id="2">
+            <div class="card-header">
+              <div class="card-title i18n"
+                   data-en="Maghreb COE – N1 Functional Consultants"
+                   data-fr="COE Maghreb – Consultants fonctionnels N1">
+                Maghreb COE – N1 Functional Consultants
+              </div>
+              <span class="tag tag-local i18n"
+                    data-en="Local COE – Maghreb"
+                    data-fr="COE local – Maghreb">
+                Local COE – Maghreb
+              </span>
+            </div>
+            <div class="card-body">
+              <p class="i18n"
+                 data-en="Local Chefs de Projet Innovation and N1 consultants acting as the field relay in each city: preparing the ground, driving adoption and embedding tools into performance routines."
+                 data-fr="Chefs de Projet Innovation et consultants N1 locaux jouant le rôle de relais terrain dans chaque ville : préparation du terrain, pilotage de l’adoption et ancrage des outils dans les routines de performance.">
+                Local Chefs de Projet Innovation and N1 consultants acting as the field relay in each city: preparing the ground, driving adoption and embedding tools into performance routines.
+              </p>
+
+              <div class="detail-only">
+                <div class="divider-label i18n"
+                     data-en="3 key moments for N1"
+                     data-fr="3 moments clés pour le N1">
+                  3 key moments for N1
+                </div>
+                <ul style="margin-left: 16px; margin-top: 2px; display: grid; gap: 3px;">
+                  <li class="i18n"
+                      data-en="Before kick-off – align with Ops &amp; Quality, update grids and prepare teams."
+                      data-fr="Avant kick-off – alignement avec Ops &amp; Qualité, mise à jour des grilles et préparation des équipes.">
+                    Before kick-off – align with Ops &amp; Quality, update grids and prepare teams.
+                  </li>
+                  <li class="i18n"
+                      data-en="During deployment – track adoption versus KPIs, escalate issues and support front-line leaders."
+                      data-fr="Pendant le déploiement – suivi de l’adoption versus KPIs, escalade des irritants et support aux leaders de proximité.">
+                    During deployment – track adoption versus KPIs, escalate issues and support front-line leaders.
+                  </li>
+                  <li class="i18n"
+                      data-en="Post set-up – stay close to the floor, monitor usage over time and feed back improvements into the core."
+                      data-fr="Post set-up – proximité plateau, suivi de l’usage dans le temps et remontée d’améliorations vers le pôle central.">
+                    Post set-up – stay close to the floor, monitor usage over time and feed back improvements into the core.
+                  </li>
+                </ul>
+
+                <div class="divider-label i18n"
+                     data-en="Chefs de Projet Innovation &amp; N1 by location"
+                     data-fr="Chefs de Projet Innovation &amp; N1 par localisation">
+                  Chefs de Projet Innovation &amp; N1 by location
+                </div>
+                <div class="local-grid">
+                  <div class="local-col">
+                    <div class="local-title i18n"
+                         data-en="Marrakech"
+                         data-fr="Marrakech">
+                      Marrakech
+                    </div>
+                    <div class="local-item">
+                      <div class="local-role i18n"
+                           data-en="Innovation Project Lead: Amine Belbachir"
+                           data-fr="Chef de Projet Innovation&nbsp;: Amine Belbachir">
+                        Innovation Project Lead: Amine Belbachir
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: Hana Arib"
+                           data-fr="N1&nbsp;: Hana Arib">
+                        N1: Hana Arib
+                      </div>
+                    </div>
+
+                    <div class="local-title i18n"
+                         data-en="Agadir"
+                         data-fr="Agadir">
+                      Agadir
+                    </div>
+                    <div class="local-item">
+                      <div class="local-role i18n"
+                           data-en="Innovation Project Lead: Jihane"
+                           data-fr="Chef de Projet Innovation&nbsp;: Jihane">
+                        Innovation Project Lead: Jihane
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: To be confirmed (Agadir)"
+                           data-fr="N1&nbsp;: À confirmer (Agadir)">
+                        N1: To be confirmed (Agadir)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="local-col">
+                    <div class="local-title i18n"
+                         data-en="Rabat / Casa &amp; Kénitra / Salé"
+                         data-fr="Rabat / Casa &amp; Kénitra / Salé">
+                      Rabat / Casa &amp; Kénitra / Salé
+                    </div>
+                    <div class="local-item">
+                      <div class="local-role i18n"
+                           data-en="Innovation Project Lead: Amine Doudouz"
+                           data-fr="Chef de Projet Innovation&nbsp;: Amine Doudouz">
+                        Innovation Project Lead: Amine Doudouz
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: Amina Lhiani (Kénitra)"
+                           data-fr="N1&nbsp;: Amina Lhiani (Kénitra)">
+                        N1: Amina Lhiani (Kénitra)
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: To be confirmed (Rabat / Casa)"
+                           data-fr="N1&nbsp;: À confirmer (Rabat / Casa)">
+                        N1: To be confirmed (Rabat / Casa)
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: To be confirmed (Salé)"
+                           data-fr="N1&nbsp;: À confirmer (Salé)">
+                        N1: To be confirmed (Salé)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="local-col">
+                    <div class="local-title i18n"
+                         data-en="Fès &amp; Meknès"
+                         data-fr="Fès &amp; Meknès">
+                      Fès &amp; Meknès
+                    </div>
+                    <div class="local-item">
+                      <div class="local-role i18n"
+                           data-en="Innovation Project Lead: Omar"
+                           data-fr="Chef de Projet Innovation&nbsp;: Omar">
+                        Innovation Project Lead: Omar
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: Achraf Elmaslouhi (Meknès)"
+                           data-fr="N1&nbsp;: Achraf Elmaslouhi (Meknès)">
+                        N1: Achraf Elmaslouhi (Meknès)
+                      </div>
+                    </div>
+
+                    <div class="local-title i18n"
+                         data-en="AT Region (Algeria / Tunisia)"
+                         data-fr="Région AT (Algérie / Tunisie)">
+                      AT Region (Algeria / Tunisia)
+                    </div>
+                    <div class="local-item">
+                      <div class="local-role i18n"
+                           data-en="Innovation Project Lead: To be confirmed (AT)"
+                           data-fr="Chef de Projet Innovation&nbsp;: À confirmer (AT)">
+                        Innovation Project Lead: To be confirmed (AT)
+                      </div>
+                      <div class="local-n1 i18n"
+                           data-en="N1: Rahma Ezzine (Tunisia)"
+                           data-fr="N1&nbsp;: Rahma Ezzine (Tunisie)">
+                        N1: Rahma Ezzine (Tunisie)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="connector-row">
+          <div class="connector-label i18n"
+               data-en="From functional standards &amp; shared services to local COE execution"
+               data-fr="Des standards fonctionnels &amp; Shared Service vers l’exécution locale des COE">
+            From functional standards &amp; shared services to local COE execution
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="card-overlay" class="card-overlay" aria-hidden="true">
+    <div class="overlay-inner">
+      <button class="overlay-close" type="button">
+        <span>&times;</span>
+        <span class="i18n"
+              data-en="Close"
+              data-fr="Fermer">Close</span>
+      </button>
+
+      <button class="overlay-nav overlay-prev" type="button">
+        <span class="icon">←</span>
+        <span class="i18n"
+              data-en="Previous"
+              data-fr="Précédent">Previous</span>
+      </button>
+
+      <button class="overlay-nav overlay-next" type="button">
+        <span class="i18n"
+              data-en="Next"
+              data-fr="Suivant">Next</span>
+        <span class="icon">→</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      let currentLang = 'en';
+      let cardOrder = [];
+      let currentIndex = -1;
+      let hideNavTimeout = null;
+
+      function applyLanguage(lang) {
+        currentLang = lang;
+
+        document.querySelectorAll('.i18n').forEach(function (el) {
+          const text = el.getAttribute('data-' + lang);
+          if (text !== null) {
+            el.innerHTML = text;
+          }
+        });
+
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+          if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'fr');
+
+        try {
+          window.localStorage.setItem('org-model-lang', lang);
+        } catch (e) {}
+      }
+
+      function hideNavAfterDelay() {
+        const overlay = document.getElementById('card-overlay');
+        if (!overlay) return;
+        const navs = overlay.querySelectorAll('.overlay-nav');
+
+        navs.forEach(nav => nav.classList.remove('hidden'));
+
+        if (hideNavTimeout) {
+          clearTimeout(hideNavTimeout);
+        }
+
+        hideNavTimeout = setTimeout(() => {
+          navs.forEach(nav => nav.classList.add('hidden'));
+        }, 2000);
+      }
+
+      function closeOverlay() {
+        const overlay = document.getElementById('card-overlay');
+        if (!overlay) return;
+        const inner = overlay.querySelector('.overlay-inner');
+        overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        const existing = inner.querySelector('.overlay-card');
+        if (existing) existing.remove();
+        currentIndex = -1;
+        if (hideNavTimeout) {
+          clearTimeout(hideNavTimeout);
+          hideNavTimeout = null;
+        }
+      }
+
+      function showCardAt(index) {
+        const overlay = document.getElementById('card-overlay');
+        if (!overlay || !cardOrder.length) return;
+
+        if (index < 0) index = cardOrder.length - 1;
+        if (index >= cardOrder.length) index = 0;
+        currentIndex = index;
+
+        const sourceCard = cardOrder[index];
+        const inner = overlay.querySelector('.overlay-inner');
+        const existing = inner.querySelector('.overlay-card');
+        if (existing) existing.remove();
+
+        const clone = sourceCard.cloneNode(true);
+        clone.classList.add('overlay-card', 'expanded');
+        clone.style.cursor = 'default';
+        inner.appendChild(clone);
+
+        applyLanguage(currentLang);
+        hideNavAfterDelay();
+      }
+
+      function openCard(card) {
+        const overlay = document.getElementById('card-overlay');
+        if (!overlay) return;
+
+        const idx = cardOrder.indexOf(card);
+        if (idx === -1) return;
+
+        overlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+        showCardAt(idx);
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        let stored = null;
+        try {
+          stored = window.localStorage.getItem('org-model-lang');
+        } catch (e) {
+          stored = null;
+        }
+        const initialLang = stored === 'fr' ? 'fr' : 'en';
+        applyLanguage(initialLang);
+
+        cardOrder = Array.from(document.querySelectorAll('.card[data-card-id]'))
+          .sort(function (a, b) {
+            const ia = parseInt(a.getAttribute('data-card-id') || '0', 10);
+            const ib = parseInt(b.getAttribute('data-card-id') || '0', 10);
+            return ia - ib;
+          });
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const lang = btn.getAttribute('data-lang');
+            if (lang && lang !== currentLang) {
+              applyLanguage(lang);
+            }
+          });
+        });
+
+        cardOrder.forEach(function (card) {
+          card.addEventListener('click', function () {
+            openCard(card);
+          });
+        });
+
+        const overlay = document.getElementById('card-overlay');
+        if (overlay) {
+          const closeBtn = overlay.querySelector('.overlay-close');
+          const prevBtn = overlay.querySelector('.overlay-prev');
+          const nextBtn = overlay.querySelector('.overlay-next');
+
+          if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              closeOverlay();
+            });
+          }
+
+          if (prevBtn) {
+            prevBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              if (currentIndex !== -1) {
+                showCardAt(currentIndex - 1);
+              }
+            });
+          }
+
+          if (nextBtn) {
+            nextBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              if (currentIndex !== -1) {
+                showCardAt(currentIndex + 1);
+              }
+            });
+          }
+
+          overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+              closeOverlay();
+            }
+          });
+
+          overlay.addEventListener('mousemove', function () {
+            if (overlay.classList.contains('active')) {
+              hideNavAfterDelay();
+            }
+          });
+        }
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeOverlay();
+          } else if (e.key === 'ArrowLeft' && currentIndex !== -1) {
+            showCardAt(currentIndex - 1);
+          } else if (e.key === 'ArrowRight' && currentIndex !== -1) {
+            showCardAt(currentIndex + 1);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
