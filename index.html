@@ -149,6 +149,27 @@
       display: block;
     }
 
+    .ix-products-inline {
+      display: grid;
+      gap: var(--spacing);
+    }
+
+    .ix-products-embed {
+      border: 1px solid rgba(37, 226, 204, 0.35);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(37, 226, 204, 0.08), rgba(0, 45, 73, 0.25));
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      min-height: 70vh;
+    }
+
+    .ix-products-embed iframe {
+      width: 100%;
+      height: 95vh;
+      border: none;
+      display: block;
+    }
+
     .org-step-panels {
       position: relative;
       overflow: hidden;
@@ -1884,18 +1905,24 @@
 
       <section class="slide" data-title="F. IX Products">
         <div class="section-title"><span>F</span>IX Products</div>
-        <div class="content-grid">
-          <div class="card">
-            <h3>Product Pipeline</h3>
-            <p>TODO: List products in discovery, build, and launch phases.</p>
+        <div class="ix-products-inline">
+          <div class="content-grid">
+            <div class="card">
+              <h3>Maghreb IX Products Dashboard</h3>
+              <p>
+                Track IX Hero, IX Hello, and RPA delivery across Morocco, Algeria, and Tunisia with a dedicated,
+                presentation-ready dashboard.
+              </p>
+              <ul>
+                <li>Macro view of deployments versus pipeline, split by product.</li>
+                <li>Detailed project lists by country and lifecycle stage.</li>
+                <li>Targets to surpass 3,500 IX Hero licences by 2026.</li>
+              </ul>
+            </div>
           </div>
-          <div class="card">
-            <h3>Roadmap</h3>
-            <p>TODO: Quarter-by-quarter view of upcoming releases and milestones.</p>
-          </div>
-          <div class="card">
-            <h3>Impact</h3>
-            <p>TODO: Summaries of business value, adoption metrics, and feedback.</p>
+
+          <div class="ix-products-embed" aria-label="IX Products – Tracking (Maghreb)">
+            <iframe src="ix-products.html" title="IX Products – Tracking (Maghreb)"></iframe>
           </div>
         </div>
       </section>
