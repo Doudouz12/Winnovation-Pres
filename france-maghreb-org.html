@@ -516,8 +516,7 @@
 
     .mag-band {
       position: absolute;
-      left: 4%;
-      right: 4%;
+      left: 0;
       border-radius: 20px;
       background: radial-gradient(circle at top, #0a1030bb 0, #050816aa 60%);
       border: 1px dashed #25e2cc55;
@@ -1306,19 +1305,27 @@
 
         let minTop = Infinity;
         let maxBottom = -Infinity;
+        let minLeft = Infinity;
+        let maxRight = -Infinity;
 
         nodes.forEach(node => {
           const r = node.getBoundingClientRect();
           if (r.top < minTop) minTop = r.top;
           if (r.bottom > maxBottom) maxBottom = r.bottom;
+          if (r.left < minLeft) minLeft = r.left;
+          if (r.right > maxRight) maxRight = r.right;
         });
 
-        if (!isFinite(minTop) || !isFinite(maxBottom)) return;
+        if (!isFinite(minTop) || !isFinite(maxBottom) || !isFinite(minLeft) || !isFinite(maxRight)) return;
 
         const padding = 16;
         const topInLayer = (minTop - rectLayer.top) / zoomLevel - padding;
         const heightInLayer = (maxBottom - minTop) / zoomLevel + padding * 2;
+        const leftInLayer = (minLeft - rectLayer.left) / zoomLevel - padding;
+        const widthInLayer = (maxRight - minLeft) / zoomLevel + padding * 2;
 
+        band.style.left = `${Math.max(0, leftInLayer)}px`;
+        band.style.width = `${widthInLayer}px`;
         band.style.top = `${topInLayer}px`;
         band.style.height = `${heightInLayer}px`;
         band.style.opacity = '1';
